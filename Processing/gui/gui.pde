@@ -36,10 +36,6 @@ void setup(){
   // printed by the line above).
   arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
   
-  // Alternatively, use the name of the serial port corresponding to your
-  // Arduino (in double-quotes), as in the following line.
-  //arduino = new Arduino(this, "/dev/tty.usbmodem621", 57600);
-  
   // Set the Arduino digital pins as inputs.
   for (int i = 0; i <= 13; i++)
     arduino.pinMode(i, Arduino.INPUT);
