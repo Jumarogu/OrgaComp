@@ -1,6 +1,7 @@
 import processing.serial.*; //Libreria para utilizar el puerto serial
 import cc.arduino.*;
 Arduino arduino;
+ 
 int num1 = 0;
 int num2 = 0;
 int num3 = 0;
@@ -24,30 +25,38 @@ void setup(){
 }
 
 void draw(){
-
+//GUI ******************************
   fill(102);//Cuadro de operacion
-  rect(25, 25, 200, 200);
+  rect(25, 25, 200, 200, 10);
 
   fill(252,166,3);//Cuadro de explicacion
-  rect(250, 25, 725, 200);
+  rect(250, 25, 725, 200, 10);
 
-  fill(148,73,179);//Primer cuadro
-  rect(25, 250, 462, 160);
+  fill(148,73,179);//Primer cuadro ELIPSE
+  rect(25, 250, 462, 160, 10);
+  fill(100);
+  ellipse(100, 330, 80, 80);
 
-  fill(52,203,205);//Segundo cuadro
-  rect(515, 250, 462, 160);
-
-  fill(101,191,61);//Tercer cuadro
-  rect(25, 435, 462, 160);
-            
+  fill(52,203,205);//Segundo cuadro RECTANGULO
+  rect(515, 250, 462, 160, 10);
+  fill(100); 
+  rect(553, 290, 80, 80);
+  
+  fill(101,191,61);//Tercer cuadro TRIANGULO
+  rect(25, 435, 462, 160, 10);
+  fill(100);
+  ellipse(100, 515, 80, 80);
+  
   fill(254,53,82);//Cuarto cuadro
-  rect(515, 435, 462, 160);
-
-
-
+  rect(515, 435, 462, 160, 10);
+  fill(100);
+  ellipse(590, 515, 80, 80);
+  
   textAlign(CENTER);
   textSize(50);
+//FIN GUI 
 
+//RECUADRO SUPERIOR-IZQUIERDO*************
   ///Primeros dos digitos
   fill(255,0,0);//Rojo
   text(num1, 109,80);
@@ -70,12 +79,15 @@ void draw(){
   fill(0,0,255);//Azul
   text(res2, 141,195);
 
-
   stroke(0,0,0);
   line(70, 145, 180, 145);
   line(69, 146, 181, 146);
   line(69, 147, 181, 147);
   line(70, 148, 180, 148);
+//FIN RECUADRO SUPERIOR-IZQUIERDO
+
+//RECUADRO SUPERIOR-DERECHO ***************
+ 
 }
 
 void generarNumeros(){
@@ -87,7 +99,7 @@ void generarNumeros(){
   res1 = num1 + num3;
   res2 = num2 + num4;
   
-  if(((res1 >= 10) || (res2 >= 10))){
+  if(((res1 >= 10) || (res2 >= 10)) || (num1 < num3) || (num3==0 && num4 == 0) || (num1==0 && num2 == 0)){
     generarNumeros();
   } 
 }
