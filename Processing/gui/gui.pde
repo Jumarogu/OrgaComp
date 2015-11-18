@@ -1,6 +1,5 @@
 import processing.serial.*; //Libreria para utilizar el puerto serial
 import cc.arduino.*;
-Arduino arduino;
 
 size(1000, 620);
 background(201,89,13);
@@ -58,7 +57,7 @@ textSize(32);
 text("12+12", 125,25);
 
 void setup(){
-
+  Arduino arduino;
   // port corresponding to your Arduino board (as it appears in the list
   // printed by the line above).
   arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
