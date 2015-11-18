@@ -20,7 +20,7 @@ void setup(){
   
   // Set the Arduino digital pins as inputs.
   //for (int i = 0; i <= 13; i++)
-    //arduino.pinMode(i, Arduino.INPUT);
+  //arduino.pinMode(i, Arduino.INPUT);
   generarNumeros();
 }
 
@@ -45,12 +45,12 @@ void draw(){
   fill(101,191,61);//Tercer cuadro TRIANGULO
   rect(25, 435, 462, 160, 10);
   fill(100);
-  ellipse(100, 515, 80, 80);
+  triangle(103, 475, 63, 555, 143, 555);
   
   fill(254,53,82);//Cuarto cuadro
   rect(515, 435, 462, 160, 10);
   fill(100);
-  ellipse(590, 515, 80, 80);
+  ellipse(590, 515, 80, 80); //OTRA FIGURA POR DIBUJAR ----------
   
   textAlign(CENTER);
   textSize(50);
