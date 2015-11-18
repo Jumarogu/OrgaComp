@@ -1,7 +1,12 @@
 import processing.serial.*; //Libreria para utilizar el puerto serial
 import cc.arduino.*;
 Arduino arduino;
-
+int num1 = 0;
+int num2 = 0;
+int num3 = 0;
+int num4 = 0;
+int resultado = 0;
+String signo = "+";
 
 void setup(){
   size(1000, 620);
@@ -44,27 +49,24 @@ void draw(){
 
   ///Primeros dos digitos
   fill(255,0,0);//Rojo
-  text("9", 109,80);
+  text(num1, 109,80);
   fill(0,0,255);//Azul
-  text("9", 141,80);
+  text(num2, 141,80);
 
   //Signo
   stroke(0,0,0);
-  text("+", 174,75);
+  text(signo, 174,75);
 
   //Segundos dos digitos
   fill(255,0,0);//Rojo
-  text("1", 109,135);
+  text(num3, 109,135);
   fill(0,0,255);//Azul
-  text("2", 141,135);
+  text(num4, 141,135);
 
-  //text("_____", 125,135);
 
   stroke(0,0,0);
   line(70, 145, 180, 145);
   line(69, 146, 181, 146);
   line(69, 147, 181, 147);
   line(70, 148, 180, 148);
-
-
 }
