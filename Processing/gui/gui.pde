@@ -87,8 +87,7 @@ void generarNumeros(){
   res1 = num1 + num3;
   res2 = num2 + num4;
   
-  if((res1 > 10) || (res2 > 10)){
+  if(((res1 >= 10) || (res2 >= 10))){
     generarNumeros();
-  }
-  
+  } 
 }
