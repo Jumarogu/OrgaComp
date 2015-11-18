@@ -23,5 +23,28 @@ rect(515, 435, 462, 160);
 
 
 textAlign(CENTER);
-textSize(32);
-text("12+12", 125,25);
+textSize(50);
+
+///Primeros dos digitos
+fill(255,0,0);//Rojo
+text("9", 109,80);
+fill(0,0,255);//Azul
+text("9", 141,80);
+
+//Signo
+stroke(0,0,0);
+text("+", 174,75);
+
+//Segundos dos digitos
+fill(255,0,0);//Rojo
+text("1", 109,135);
+fill(0,0,255);//Azul
+text("2", 141,135);
+
+//text("_____", 125,135);
+
+stroke(0,0,0);
+line(70, 145, 180, 145);
+line(69, 146, 181, 146);
+line(69, 147, 181, 147);
+line(70, 148, 180, 148);
