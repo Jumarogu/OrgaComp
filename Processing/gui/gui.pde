@@ -5,13 +5,14 @@ int num1 = 0;
 int num2 = 0;
 int num3 = 0;
 int num4 = 0;
-int resultado = 0;
+int res1 = 0;
+int res2 = 0;
 String signo = "+";
 
 void setup(){
   size(1000, 620);
   background(201,89,13);
-
+  
   // port corresponding to your Arduino board (as it appears in the list
   // printed by the line above).
   //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
@@ -19,7 +20,7 @@ void setup(){
   // Set the Arduino digital pins as inputs.
   //for (int i = 0; i <= 13; i++)
     //arduino.pinMode(i, Arduino.INPUT);
-  
+  generarNumeros();
 }
 
 void draw(){
@@ -62,6 +63,12 @@ void draw(){
   text(num3, 109,135);
   fill(0,0,255);//Azul
   text(num4, 141,135);
+  
+  //Segundos dos digitos
+  fill(255,0,0);//Rojo
+  text(res1, 109,195);
+  fill(0,0,255);//Azul
+  text(res2, 141,195);
 
 
   stroke(0,0,0);
@@ -69,4 +76,19 @@ void draw(){
   line(69, 146, 181, 146);
   line(69, 147, 181, 147);
   line(70, 148, 180, 148);
+}
+
+void generarNumeros(){
+  num1 = int(random(10));
+  num2 = int(random(10));
+  num3 = int(random(10));
+  num4 = int(random(10));
+  
+  res1 = num1 + num3;
+  res2 = num2 + num4;
+  
+  if((res1 > 10) || (res2 > 10)){
+    generarNumeros();
+  }
+  
 }
