@@ -44,16 +44,6 @@ void setup(){
   gameOver = false;
   opOver = false;
   
-  /*Generación de número aleatorios 
-   *creación de objeto Operación  */
-  generarNumeros();
-  numero1 = num1 + "" +num2;
-  numero2 = num3 + "" +num4;
-  val1 = Integer.parseInt(numero1);
-  val2 = Integer.parseInt(numero2);
-  op = new Operacion(val1, val2);
-  println(val1 + " + " + val2 + " = " + (val1+val2));
-  
   /*Creación objeto Arduino
    *Set the Arduino digital pins as OUTPUTS.
    *Set HIGH digital pins LIFE
@@ -68,31 +58,20 @@ void setup(){
   lightS1 = 1;
   lightS2 = 2;
   lightS3 = 3;
-  
-  board = new Board(op);
 }
 
 void draw(){
   
-  /*while(!gameOver){
-    
-    while(!opOver){
-      if(arduino.analogRead(lightS0) <= 0){
-        print("Funciona!!");
-      }
-      else if(arduino.analogRead(lightS1) <= 0){
-        
-      }
-      else if(arduino.analogRead(lightS2) <= 0){
-        
-      }
-      else if(arduino.analogRead(lightS3) <= 0){
-        
-      }
-    }
-    
-  }
-  */
+  /*Generación de número aleatorios 
+   *creación de objeto Operación  */
+  generarNumeros();
+  numero1 = num1 + "" +num2;
+  numero2 = num3 + "" +num4;
+  val1 = Integer.parseInt(numero1);
+  val2 = Integer.parseInt(numero2);
+  op = new Operacion(val1, val2);
+  println(val1 + " + " + val2 + " = " + (val1+val2));
+  board = new Board(op);
 //Prueba de sensores
 //if(arduino.analogRead(0) <= 0){
 //  print("Funciona!!");
@@ -285,6 +264,49 @@ void draw(){
       dist = 170 / (num4 - 5);
       posX = dist;
       posY += 25;
+    }
+  }
+  
+  while(!opOver){
+    if(arduino.analogRead(lightS0) <= 0){
+      if(board.getResultados()[0] == op.getResultado()){
+         print("Correcto!!");
+         opOver = true;
+      }
+      else{
+        print("Respuesta incorrecta!!");
+        print("Intenta de nuevo!");
+      }
+    }
+    else if(arduino.analogRead(lightS1) <= 0){
+      if(board.getResultados()[1] == op.getResultado()){
+         print("Correcto!!"); 
+         opOver = true;
+      }
+      else{
+        print("Respuesta incorrecta!!");
+        print("Intenta de nuevo!");
+      }
+    }
+    else if(arduino.analogRead(lightS2) <= 0){
+      if(board.getResultados()[2] == op.getResultado()){
+        print("Correcto!!"); 
+        opOver = true;  
+      }
+      else{
+        print("Respuesta incorrecta!!");
+        print("Intenta de nuevo!");
+      }
+    }
+    else if(arduino.analogRead(lightS3) <= 0){
+      if(board.getResultados()[3] == op.getResultado()){
+        print("Correcto!!");
+        opOver = true;
+      }
+      else{
+        print("Respuesta incorrecta!!");
+        print("Intenta de nuevo!");
+      }
     }
   }
 }
