@@ -109,16 +109,23 @@ void draw(){
   rect(25, 250, 462, 160, 10);
   fill(100);
   ellipse(100, 330, 80, 80);
+  textSize(100);
+  fill(52,203,205);
+  text(board.getResultados()[0],300 ,360);
 
   fill(52,203,205);//Segundo cuadro RECTANGULO
   rect(515, 250, 462, 160, 10);
   fill(100); 
   rect(553, 290, 80, 80);
+  fill(148,73,179);
+  text(board.getResultados()[1],790 ,360);
   
   fill(101,191,61);//Tercer cuadro TRIANGULO
   rect(25, 435, 462, 160, 10);
   fill(100);
   triangle(103, 475, 63, 555, 143, 555);
+  fill(254,53,82);
+  text(board.getResultados()[2],300 ,545);
   
   fill(254,53,82);//Cuarto cuadro HEXAGONO
   rect(515, 435, 462, 160, 10);
@@ -132,6 +139,8 @@ void draw(){
   line(540, 514, 564, 556); // SEGUNDA LINEA IZQUIERDO INFERIOR
   line(620, 473, 644, 514); // PRIMERA LINEA DERECHO SUPERIOR
   line(644, 514, 620, 556); // SEGUNDA LINEA DERECHO INFERIOR
+  fill(101,191,61);
+  text(board.getResultados()[3],790 ,545);
   
   textAlign(CENTER);
   textSize(50);
@@ -155,11 +164,11 @@ void draw(){
   fill(0,0,255);//Azul
   text(num4, 141,135);
   
-  //Segundos dos digitos
+  //Respuesta
   fill(255,0,0);//Rojo
-  text(res1, 109,195);
+  text("?", 109,195);
   fill(0,0,255);//Azul
-  text(res2, 141,195);
+  text("?", 141,195);
 
   stroke(0,0,0);
   line(70, 145, 180, 145);
