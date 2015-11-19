@@ -10,18 +10,21 @@ int res1 = 0;
 int res2 = 0;
 String signo = "+";
 
+Operacion op;
+
 void setup(){
   size(1000, 620);
   background(201,89,13);
   
-  // port corresponding to your Arduino board (as it appears in the list
-  // printed by the line above).
+  
+  generarNumeros();
+  op = new Operacion(num1, num2);
+  println(num1 + " 2:" + num2);
   //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
   
   // Set the Arduino digital pins as inputs.
   //for (int i = 0; i <= 13; i++)
   //arduino.pinMode(i, Arduino.INPUT);
-  generarNumeros();
 }
 
 void draw(){
@@ -102,4 +105,23 @@ void generarNumeros(){
   if(((res1 >= 10) || (res2 >= 10)) || (num1 < num3) || (num3==0 && num4 == 0) || (num1==0 && num2 == 0)){
     generarNumeros();
   } 
+}
+
+class Operacion{
+  private int num1;
+  private int num2;
+  private int resultado;
+  
+  Operacion(int num1, int num2){
+    this.num1 = num1;
+    this.num2 = num2;
+  }
+  boolean isCorrect(int resultado){
+    if(this.resultado == resultado){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 }
