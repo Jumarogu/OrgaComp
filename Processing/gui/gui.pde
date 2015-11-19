@@ -2,10 +2,11 @@ import processing.serial.*; //Libreria para utilizar el puerto serial
 import cc.arduino.*;
 
 //Sensores
-int lightS0;
 int lightS1;
 int lightS2;
 int lightS3;
+int lightS4;
+int intensidadLuz;
 
 //Arduino variables
 Arduino arduino;
@@ -43,6 +44,7 @@ void setup(){
   //Seting boolean variables to false
   gameOver = false;
   opOver = false;
+  intensidadLuz = 9;
   
   /*Creación objeto Arduino
    *Set the Arduino digital pins as OUTPUTS.
@@ -50,21 +52,19 @@ void setup(){
    *Set the value for every light sensor
   */
   arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
-  for (int i = 1; i < 5; i++){
+  for (int i = 1; i < 6; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
   }
-  lightS0 = 0;
   lightS1 = 1;
   lightS2 = 2;
   lightS3 = 3;
-}
-
-void draw(){
+  lightS4 = 4;
   
-  /*Generación de número aleatorios 
+   /*Generación de número aleatorios 
    *creación de objeto Operación  */
   generarNumeros();
+  opOver = false;
   numero1 = num1 + "" +num2;
   numero2 = num3 + "" +num4;
   val1 = Integer.parseInt(numero1);
@@ -72,6 +72,10 @@ void draw(){
   op = new Operacion(val1, val2);
   println(val1 + " + " + val2 + " = " + (val1+val2));
   board = new Board(op);
+}
+
+void draw(){
+  
 //Prueba de sensores
 //if(arduino.analogRead(0) <= 0){
 //  print("Funciona!!");
@@ -91,7 +95,7 @@ void draw(){
   textSize(100);
   fill(52,203,205);
   text(board.getResultados()[0],300 ,360);
-
+print("mE VAIÓ VERGA LA GUI");
   fill(52,203,205);//Segundo cuadro RECTANGULO
   rect(515, 250, 462, 160, 10);
   fill(100); 
@@ -266,9 +270,13 @@ void draw(){
       posY += 25;
     }
   }
-  
-  while(!opOver){
-    if(arduino.analogRead(lightS0) <= 0){
+  checar();
+  //println(arduino.analogRead(1));
+}
+
+void checar(){
+   while(!opOver){
+    if(arduino.analogRead(lightS1) <= intensidadLuz){
       if(board.getResultados()[0] == op.getResultado()){
          print("Correcto!!");
          opOver = true;
@@ -278,7 +286,7 @@ void draw(){
         print("Intenta de nuevo!");
       }
     }
-    else if(arduino.analogRead(lightS1) <= 0){
+    else if(arduino.analogRead(lightS2) <= intensidadLuz){
       if(board.getResultados()[1] == op.getResultado()){
          print("Correcto!!"); 
          opOver = true;
@@ -288,7 +296,7 @@ void draw(){
         print("Intenta de nuevo!");
       }
     }
-    else if(arduino.analogRead(lightS2) <= 0){
+    else if(arduino.analogRead(lightS3) <= intensidadLuz){
       if(board.getResultados()[2] == op.getResultado()){
         print("Correcto!!"); 
         opOver = true;  
@@ -298,7 +306,7 @@ void draw(){
         print("Intenta de nuevo!");
       }
     }
-    else if(arduino.analogRead(lightS3) <= 0){
+    else if(arduino.analogRead(lightS4) <= intensidadLuz){
       if(board.getResultados()[3] == op.getResultado()){
         print("Correcto!!");
         opOver = true;
@@ -366,6 +374,7 @@ class Board{
     for(int i = 0; i<4; i++){
       println(this.resultados[i]);
     }
+
   }
   //Get resultados
   int[] getResultados(){
