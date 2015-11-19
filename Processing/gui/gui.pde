@@ -49,11 +49,11 @@ void setup(){
    *Set HIGH digital pins LIFE
    *Set the value for every light sensor
   */
-  /*arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
+  arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
   for (int i = 1; i < 5; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
-  }*/
+  }
   lightS0 = 0;
   lightS1 = 1;
   lightS2 = 2;
