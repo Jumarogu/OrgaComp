@@ -342,16 +342,16 @@ class Board{
       if(this.resultados[rando] == 0){
         if(r == 2){
           this.resultados[rando] = resultado;
-          println(this.resultados[rando]);
+          //println(this.resultados[rando]);
           r++;
         }
         else{
           this.resultados[rando] = int(random(100)); 
-          println(this.resultados[rando]);
+          //println(this.resultados[rando]);
           r++;
         }
       }  
-      if(r >= 3){
+      if(r > 3){
         this.resultadosT = true;
       }
     }//Fin while
