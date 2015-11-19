@@ -169,7 +169,115 @@ void draw(){
 //FIN RECUADRO SUPERIOR-IZQUIERDO
 
 //RECUADRO SUPERIOR-DERECHO ***************
- 
+
+////////
+  ///Bolitas para contar************************
+  fill(255,0,0);//Unidades
+  rect(275, 50, 180, 150, 10);
+  fill(252,166,3);
+  rect(280, 55, 170, 140, 10);
+  line(280, 124, 450, 124);
+  line(280, 126, 450, 126);
+  
+  fill(0,0,255);//Decenas
+  rect(495, 50, 180, 150, 10);
+  fill(252,166,3);
+  rect(500, 55, 170, 140, 10);
+  line(500, 124, 670, 124);
+  line(500, 126, 670, 126);
+  
+  textSize(20);
+  fill(255,0,0);
+  text("Decenas", 365,45);
+  fill(0,0,255);
+  text("Unidades", 585,45);
+  textSize(50);
+  //////////////Primer digito Decenas
+  int dist=0;
+  int posY = 0;
+  if(num1 != 0){
+    if(num1 < 5){
+      dist = 170/ num1;
+      posY +=12;
+    }else{
+      dist = 170 / 5;
+    }
+  }
+  int posX = dist;
+  fill(255,0,0);
+  for(int i = 0; i < num1; i++){
+    ellipse(280 + (posX - dist/2),80 + (posY),20,20);
+    posX+=dist;
+    if(i == 4 && num1 != 5){
+      dist = 170 / (num1 - 5);
+      posX = dist;
+      posY += 25;
+    }
+  }
+  //////////////Segundo Digito Decenas
+  dist=0;
+  posY = 0;
+  if(num3 != 0){
+    if(num3 < 5){
+      dist = 170/ num3;
+      posY +=12;
+    }else{
+      dist = 170 / 5;
+    }
+  }
+  posX = dist;
+  for(int i = 0; i < num3; i++){
+    ellipse(280 + (posX - dist/2),145 + (posY),20,20);
+    posX+=dist;
+    if(i == 4 && num3 != 5){
+      dist = 170 / (num3 - 5);
+      posX = dist;
+      posY += 25;
+    }
+  }
+  //////////////Primer digito Unidades
+  dist=0;
+  posY = 0;
+  if(num2 != 0){
+    if(num2 < 5){
+      dist = 170/ num2;
+      posY +=12;
+    }else{
+      dist = 170 / 5;
+    }
+  }
+  posX = dist;
+  fill(0,0,255);
+  for(int i = 0; i < num2; i++){
+    ellipse(500 + (posX - dist/2),80 + (posY),20,20);
+    posX+=dist;
+    if(i == 4 && num2 != 5){
+      dist = 170 / (num2 - 5);
+      posX = dist;
+      posY += 25;
+    }
+  }
+  //////////////Segundo digito Unidades
+  dist=0;
+  posY = 0;
+  if(num4 != 0){
+    if(num4 < 5){
+      dist = 170/ num4;
+      posY +=12;
+    }else{
+      dist = 170 / 5;
+    }
+  }
+  posX = dist;
+  for(int i = 0; i < num4; i++){
+    ellipse(500 + (posX - dist/2),145 + (posY),20,20);
+    posX+=dist;
+    if(i == 4 && num4 != 5){
+      dist = 170 / (num4 - 5);
+      posX = dist;
+      posY += 25;
+    }
+  }
 }
 //Método Generar Números *****************
 void generarNumeros(){
