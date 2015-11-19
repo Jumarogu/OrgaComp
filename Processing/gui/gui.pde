@@ -1,7 +1,15 @@
 import processing.serial.*; //Libreria para utilizar el puerto serial
 import cc.arduino.*;
+
+
+//Arduino var
 Arduino arduino;
- 
+int life1 = 1;
+int life2 = 2;
+int life3 = 3;
+int life4 = 4;
+int life5 = 5;
+//Variables para generar numeros para sumar
 int num1 = 0;
 int num2 = 0;
 int num3 = 0;
@@ -9,6 +17,10 @@ int num4 = 0;
 int res1 = 0;
 int res2 = 0;
 String signo = "+";
+String numero1;
+String numero2;
+int val1;
+int val2;
 
 Operacion op;
 
@@ -16,15 +28,25 @@ void setup(){
   size(1000, 620);
   background(201,89,13);
   
-  
   generarNumeros();
-  op = new Operacion(num1, num2);
-  println(num1 + " 2:" + num2);
-  //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
+  numero1 = num1 + "" +num2;
+  numero2 = num3 + "" +num4;
+  val1 = Integer.parseInt(numero1);
+  val2 = Integer.parseInt(numero2);
   
-  // Set the Arduino digital pins as inputs.
-  //for (int i = 0; i <= 13; i++)
-  //arduino.pinMode(i, Arduino.INPUT);
+  op = new Operacion(val1, val2);
+  println(val1 + " + " + val2 + " = " + (val1+val2));
+  
+  arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
+  // Set the Arduino digital pins as OUTPUTS.
+  for (int i = 1; i < 5; i++){
+    arduino.pinMode(i, Arduino.OUTPUT);
+  }
+  arduino.digitalWrite(life1, Arduino.HIGH);
+  arduino.digitalWrite(life2, Arduino.HIGH);
+  arduino.digitalWrite(life3, Arduino.HIGH);
+  arduino.digitalWrite(life4, Arduino.HIGH);
+  arduino.digitalWrite(life5, Arduino.HIGH);
 }
 
 void draw(){
