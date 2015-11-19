@@ -35,8 +35,6 @@ Operacion op;
 //Variables booleanas
 boolean gameOver;
 boolean opOver;
-boolean resultados;
-
 
 void setup(){
   size(1000, 620);
@@ -44,7 +42,6 @@ void setup(){
   //Seting boolean variables to false
   gameOver = false;
   opOver = false;
-  resultados = false;
   
   /*Generación de número aleatorios 
    *creación de objeto Operación  */
@@ -198,25 +195,39 @@ class Operacion{
     return this.resultado;
   }
 }
+
 // Clase Board ********************
 class Board{
   Operacion op;
+  boolean resultadosT;
   int[] resultados;
+  int rando;
   
   Board(Operacion op){
     this.op = op;
+    for(int i = 0; i<4; i++){
+      resultados[i] = 0;
+    }
     generaResultados(this.op.getResultado());
   }
+  //Método generaResultados
   int[] generaResultados(int resultado){
-    while(!resultados){
-      if(this.resultados[random(4)] == null){
-        
-      }
+    int r = 0;
+    while(!this.resultadosT){
+      rando = int(random(4));
       
+      if(this.resultados[rando] == 0){
+        if(){
+        }
+        this.resultados[rando] = int(random(100)); 
+        println(this.resultados[i]);
+        r++;
+      }  
+        if(r >= 3){
+          this.resultadosT = true;
+        }
+      }
     }
+    return this.resultados;
   }
-}
-
-int random(){
-  random = int(random(4));
 }
