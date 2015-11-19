@@ -61,11 +61,11 @@ void setup(){
    *Set HIGH digital pins LIFE
    *Set the value for every light sensor
   */
-  arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
+  /*arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
   for (int i = 1; i < 5; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
-  }
+  }*/
   lightS0 = 0;
   lightS1 = 1;
   lightS2 = 2;
@@ -75,7 +75,7 @@ void setup(){
 
 void draw(){
   
-  while(!gameOver){
+  /*while(!gameOver){
     
     while(!opOver){
       if(arduino.analogRead(lightS0) <= 0){
@@ -93,6 +93,7 @@ void draw(){
     }
     
   }
+  */
 //Prueba de sensores
 //if(arduino.analogRead(0) <= 0){
 //  print("Funciona!!");
@@ -120,13 +121,22 @@ void draw(){
   fill(100);
   triangle(103, 475, 63, 555, 143, 555);
   
-  fill(254,53,82);//Cuarto cuadro
+  fill(254,53,82);//Cuarto cuadro HEXAGONO
   rect(515, 435, 462, 160, 10);
   fill(100);
-  ellipse(590, 515, 80, 80); //OTRA FIGURA POR DIBUJAR ----------
+  noStroke();
+  ellipse(591, 516, 91, 91);
+  stroke(3);
+  line(564, 473, 620, 473); // PRIMERA LINEA SUPERIOR
+  line(564, 556, 620, 556); // SEGUNDA LINEA INFERIOR
+  line(564, 473, 540, 514); // PRIMERA LINEA IZQUIERDO SUPERIOR
+  line(540, 514, 564, 556); // SEGUNDA LINEA IZQUIERDO INFERIOR
+  line(620, 473, 644, 514); // PRIMERA LINEA DERECHO SUPERIOR
+  line(644, 514, 620, 556); // SEGUNDA LINEA DERECHO INFERIOR
   
   textAlign(CENTER);
   textSize(50);
+
 //FIN GUI 
 
 //RECUADRO SUPERIOR-IZQUIERDO*************
@@ -203,12 +213,12 @@ class Board{
   Operacion op;
   int[] resultados;
   
-  Board(Operacion op){
+  /*Board(Operacion op){
     this.op = op;
     generaResultados(this.op.getResultado());
   }
   int[] generaResultados(int resultado){
-    while(!resultados){
+     while(!resultados){
       if(this.resultados[random(4)] == null){
         
       }
@@ -218,5 +228,5 @@ class Board{
 }
 
 int random(){
-  random = int(random(4));
+  random = int(random(4));*/
 }
