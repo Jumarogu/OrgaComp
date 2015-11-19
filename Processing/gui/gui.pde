@@ -393,26 +393,10 @@ class Board{
   //Método generaResultados
   int[] generaResultados(int resultado){
 
-    int r = 0;
-    while(!this.resultadosT){
-      rando = int(random(4));
-      
-      if(this.resultados[rando] == 0){
-        if(r == 2){
-          this.resultados[rando] = resultado;
-          //println(this.resultados[rando]);
-          r++;
-        }
-        else{
-          this.resultados[rando] = int(random(1, 100)); 
-          //println(this.resultados[rando]);
-          r++;
-        }
-      }  
-      if(r > 3){
-        this.resultadosT = true;
-      }
-    }//Fin while
+    for(int i = 0; i< 4; i++){
+      this.resultados[i] = int(random(1,100)); 
+    }
+    this.resultados[int(random(4))] = resultado;
     return this.resultados;
   }
 }
