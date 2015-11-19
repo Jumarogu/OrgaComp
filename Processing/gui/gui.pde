@@ -44,14 +44,14 @@ void setup(){
   //Seting boolean variables to false
   gameOver = false;
   opOver = false;
-  intensidadLuz = 9;
+  intensidadLuz =4;
   
   /*Creación objeto Arduino
    *Set the Arduino digital pins as OUTPUTS.
    *Set HIGH digital pins LIFE
    *Set the value for every light sensor
   */
-  arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
+  arduino = new Arduino(this, "COM3", 57600);///dev/tty.usbmodem1411
   for (int i = 1; i < 6; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
@@ -72,6 +72,15 @@ void setup(){
   op = new Operacion(val1, val2);
   println(val1 + " + " + val2 + " = " + (val1+val2));
   board = new Board(op);
+  
+  // Create the object with the run() method
+  Runnable runnable = new BasicThread2();
+      
+  // Create the thread supplying it with the runnable object
+  Thread thread = new Thread(runnable);
+      
+  // Start the thread
+  thread.start();
 }
 
 void draw(){
@@ -95,7 +104,7 @@ void draw(){
   textSize(100);
   fill(52,203,205);
   text(board.getResultados()[0],300 ,360);
-print("mE VAIÓ VERGA LA GUI");
+
   fill(52,203,205);//Segundo cuadro RECTANGULO
   rect(515, 250, 462, 160, 10);
   fill(100); 
@@ -270,12 +279,15 @@ print("mE VAIÓ VERGA LA GUI");
       posY += 25;
     }
   }
-  checar();
+  //checar();
   //println(arduino.analogRead(1));
 }
 
 void checar(){
+  
    while(!opOver){
+     delay(200);
+     println(arduino.analogRead(lightS1) + " - " + arduino.analogRead(lightS2) + " - " + arduino.analogRead(lightS3) + " - " + arduino.analogRead(lightS4));
     if(arduino.analogRead(lightS1) <= intensidadLuz){
       if(board.getResultados()[0] == op.getResultado()){
          print("Correcto!!");
@@ -405,4 +417,13 @@ class Board{
     }//Fin while
     return this.resultados;
   }
+}
+
+
+class BasicThread2 implements Runnable {
+    // This method is called when the thread runs
+    public void run() {
+      delay(1000);
+      checar();
+    }
 }
