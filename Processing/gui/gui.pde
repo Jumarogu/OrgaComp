@@ -327,10 +327,13 @@ class Board{
   Board(Operacion op){
     this.op = op;
     this.resultados = new int[4];
-    for(int i = 0; i<3; i++){
+    for(int i = 0; i<4; i++){
       resultados[i] = 0;
     }
-    generaResultados(this.op.getResultado());
+    this.resultados = generaResultados(this.op.getResultado());
+    for(int i = 0; i<4; i++){
+      println(this.resultados[i]);
+    }
   }
   //Método generaResultados
   int[] generaResultados(int resultado){
@@ -346,7 +349,7 @@ class Board{
           r++;
         }
         else{
-          this.resultados[rando] = int(random(100)); 
+          this.resultados[rando] = int(random(1, 100)); 
           //println(this.resultados[rando]);
           r++;
         }
