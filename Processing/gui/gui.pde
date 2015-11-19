@@ -29,8 +29,9 @@ int val1;
 int val2;
 int random;
 
-//Objeto Operación
+//Objeto Operación y Board
 Operacion op;
+Board board;
 
 //Variables booleanas
 boolean gameOver;
@@ -68,6 +69,7 @@ void setup(){
   lightS2 = 2;
   lightS3 = 3;
   
+  board = new Board(op);
 }
 
 void draw(){
@@ -192,6 +194,7 @@ class Operacion{
   Operacion(int num1, int num2){
     this.num1 = num1;
     this.num2 = num2;
+    this.resultado = num1 + num2;
   }
   boolean isCorrect(int resultado){
     if(this.resultado == resultado){
@@ -213,45 +216,37 @@ class Board{
   int[] resultados;
   int rando;
   
-  /*Board(Operacion op){
+  Board(Operacion op){
     this.op = op;
-    for(int i = 0; i<4; i++){
+    this.resultados = new int[4];
+    for(int i = 0; i<3; i++){
       resultados[i] = 0;
     }
     generaResultados(this.op.getResultado());
   }
   //Método generaResultados
   int[] generaResultados(int resultado){
-<<<<<<< HEAD
-     while(!resultados){
-      if(this.resultados[random(4)] == null){
-        
-      }
-=======
+
     int r = 0;
     while(!this.resultadosT){
       rando = int(random(4));
->>>>>>> origin/master
       
       if(this.resultados[rando] == 0){
-        if(){
+        if(r == 2){
+          this.resultados[rando] = resultado;
+          println(this.resultados[rando]);
+          r++;
         }
-        this.resultados[rando] = int(random(100)); 
-        println(this.resultados[i]);
-        r++;
+        else{
+          this.resultados[rando] = int(random(100)); 
+          println(this.resultados[rando]);
+          r++;
+        }
       }  
-        if(r >= 3){
-          this.resultadosT = true;
-        }
+      if(r >= 3){
+        this.resultadosT = true;
       }
-    }
+    }//Fin while
     return this.resultados;
   }
-<<<<<<< HEAD
-}
-
-int random(){
-  random = int(random(4));*/
-=======
->>>>>>> origin/master
 }
