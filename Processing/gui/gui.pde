@@ -279,6 +279,7 @@ void draw(){
     }
   }
 }
+
 //Método Generar Números *****************
 void generarNumeros(){
   num1 = int(random(10));
@@ -334,6 +335,10 @@ class Board{
     for(int i = 0; i<4; i++){
       println(this.resultados[i]);
     }
+  }
+  //Get resultados
+  int[] getResultados(){
+    return this.resultados;
   }
   //Método generaResultados
   int[] generaResultados(int resultado){
