@@ -30,6 +30,8 @@ int val1;
 int val2;
 int random;
 
+boolean jugar = true;
+
 //Objeto Operación y Board
 Operacion op;
 Board board;
@@ -61,7 +63,7 @@ void setup(){
   lightS3 = 3;
   lightS4 = 4;
   
-   /*Generación de número aleatorios 
+  /*Generación de número aleatorios 
    *creación de objeto Operación  */
   generarNumeros();
   opOver = false;
@@ -73,13 +75,9 @@ void setup(){
   println(val1 + " + " + val2 + " = " + (val1+val2));
   board = new Board(op);
   
-  // Create the object with the run() method
+  ///Runnable
   Runnable runnable = new BasicThread2();
-      
-  // Create the thread supplying it with the runnable object
   Thread thread = new Thread(runnable);
-      
-  // Start the thread
   thread.start();
 }
 
@@ -423,7 +421,27 @@ class Board{
 class BasicThread2 implements Runnable {
     // This method is called when the thread runs
     public void run() {
-      delay(1000);
-      checar();
+      while(jugar){
+        delay(1000);
+        checar();
+        println("Nueva Operacion!");
+        delay(1000);
+        crearOperacion();
+      }
     }
+}
+
+
+void crearOperacion(){
+  /*Generación de número aleatorios 
+   *creación de objeto Operación  */
+  generarNumeros();
+  opOver = false;
+  numero1 = num1 + "" +num2;
+  numero2 = num3 + "" +num4;
+  val1 = Integer.parseInt(numero1);
+  val2 = Integer.parseInt(numero2);
+  op = new Operacion(val1, val2);
+  println(val1 + " + " + val2 + " = " + (val1+val2));
+  board = new Board(op);
 }
