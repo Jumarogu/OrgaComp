@@ -1,6 +1,11 @@
 import processing.serial.*; //Libreria para utilizar el puerto serial
 import cc.arduino.*;
 
+//Sensores
+int lightSensorPin0;
+int lightSensorPin1;
+int lightSensorPin2;
+int lightSensorPin3;
 
 //Arduino var
 Arduino arduino;
@@ -22,34 +27,39 @@ String numero2;
 int val1;
 int val2;
 
+//Objeto Operación
 Operacion op;
 
 void setup(){
   size(1000, 620);
   background(201,89,13);
-  
+  /*Generación de número aleatorios 
+   *creación de objeto Operación  */
   generarNumeros();
   numero1 = num1 + "" +num2;
   numero2 = num3 + "" +num4;
   val1 = Integer.parseInt(numero1);
   val2 = Integer.parseInt(numero2);
-  
   op = new Operacion(val1, val2);
   println(val1 + " + " + val2 + " = " + (val1+val2));
   
+  /*Creación objeto Arduino
+   *Set the Arduino digital pins as OUTPUTS.
+   *Set HIGH digital pins LIFE
+  */
   arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
-  // Set the Arduino digital pins as OUTPUTS.
   for (int i = 1; i < 5; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
+    arduino.digitalWrite(i, Arduino.HIGH);
   }
-  arduino.digitalWrite(life1, Arduino.HIGH);
-  arduino.digitalWrite(life2, Arduino.HIGH);
-  arduino.digitalWrite(life3, Arduino.HIGH);
-  arduino.digitalWrite(life4, Arduino.HIGH);
-  arduino.digitalWrite(life5, Arduino.HIGH);
 }
 
 void draw(){
+//Prueba de sensores
+if(arduino.analogRead(0) <= 0){
+  print("Funciona!!");
+}
+
 //GUI ******************************
   fill(102);//Cuadro de operacion
   rect(25, 25, 200, 200, 10);
@@ -145,5 +155,18 @@ class Operacion{
     else{
       return false;
     }
+  }
+  int getResult(){
+    return this.resultado;
+  }
+}
+
+class Board{
+  Operacion op;
+  int[] resultados;
+  
+  Board(Operacion op){
+    this.op = op;
+    
   }
 }
