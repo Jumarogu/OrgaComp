@@ -2,18 +2,19 @@ import processing.serial.*; //Libreria para utilizar el puerto serial
 import cc.arduino.*;
 
 //Sensores
-int lightSensorPin0;
-int lightSensorPin1;
-int lightSensorPin2;
-int lightSensorPin3;
+int lightS0;
+int lightS1;
+int lightS2;
+int lightS3;
 
-//Arduino var
+//Arduino variables
 Arduino arduino;
 int life1 = 1;
 int life2 = 2;
 int life3 = 3;
 int life4 = 4;
 int life5 = 5;
+
 //Variables para generar numeros para sumar
 int num1 = 0;
 int num2 = 0;
@@ -26,13 +27,25 @@ String numero1;
 String numero2;
 int val1;
 int val2;
+int random;
 
 //Objeto Operación
 Operacion op;
 
+//Variables booleanas
+boolean gameOver;
+boolean opOver;
+boolean resultados;
+
+
 void setup(){
   size(1000, 620);
   background(201,89,13);
+  //Seting boolean variables to false
+  gameOver = false;
+  opOver = false;
+  resultados = false;
+  
   /*Generación de número aleatorios 
    *creación de objeto Operación  */
   generarNumeros();
@@ -46,19 +59,44 @@ void setup(){
   /*Creación objeto Arduino
    *Set the Arduino digital pins as OUTPUTS.
    *Set HIGH digital pins LIFE
+   *Set the value for every light sensor
   */
   arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
   for (int i = 1; i < 5; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
   }
+  lightS0 = 0;
+  lightS1 = 1;
+  lightS2 = 2;
+  lightS3 = 3;
+  
 }
 
 void draw(){
+  
+  while(!gameOver){
+    
+    while(!opOver){
+      if(arduino.analogRead(lightS0) <= 0){
+        print("Funciona!!");
+      }
+      else if(arduino.analogRead(lightS1) <= 0){
+        
+      }
+      else if(arduino.analogRead(lightS2) <= 0){
+        
+      }
+      else if(arduino.analogRead(lightS3) <= 0){
+        
+      }
+    }
+    
+  }
 //Prueba de sensores
-if(arduino.analogRead(0) <= 0){
-  print("Funciona!!");
-}
+//if(arduino.analogRead(0) <= 0){
+//  print("Funciona!!");
+//}
 
 //GUI ******************************
   fill(102);//Cuadro de operacion
@@ -124,7 +162,7 @@ if(arduino.analogRead(0) <= 0){
 //RECUADRO SUPERIOR-DERECHO ***************
  
 }
-
+//Método Generar Números *****************
 void generarNumeros(){
   num1 = int(random(10));
   num2 = int(random(10));
@@ -138,7 +176,7 @@ void generarNumeros(){
     generarNumeros();
   } 
 }
-
+//Clase Operacion ******************
 class Operacion{
   private int num1;
   private int num2;
@@ -156,17 +194,29 @@ class Operacion{
       return false;
     }
   }
-  int getResult(){
+  int getResultado(){
     return this.resultado;
   }
 }
-
+// Clase Board ********************
 class Board{
   Operacion op;
   int[] resultados;
   
   Board(Operacion op){
     this.op = op;
-    
+    generaResultados(this.op.getResultado());
   }
+  int[] generaResultados(int resultado){
+    while(!resultados){
+      if(this.resultados[random(4)] == null){
+        
+      }
+      
+    }
+  }
+}
+
+int random(){
+  random = int(random(4));
 }
