@@ -53,7 +53,8 @@ void setup(){
    *Set HIGH digital pins LIFE
    *Set the value for every light sensor
   */
-  arduino = new Arduino(this, "COM3", 57600);///dev/tty.usbmodem1411
+  //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
+  arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
   for (int i = 1; i < 6; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
