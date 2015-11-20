@@ -26,13 +26,13 @@ int res2 = 0;
 String signo = "+";
 String numero1;
 String numero2;
+String mostrar1 = "?", mostrar2 = "?";
 int val1;
 int val2;
 int random;
 
-boolean jugar = false; //////////////////////////////Cambiar a True
-boolean mUnidades = true;
-boolean mDecenas = false;
+boolean jugar = true; //////////////////////////////Cambiar a True
+boolean mDecenas = false;//sive para el if de digito()
 int rangoMostrar = 1;// es para el Substring
 int tmpRango = 1;// Tiene que ser Copia de rangoMostrar
 int rangoDer = 2;
@@ -44,6 +44,8 @@ Board board;
 //Variables booleanas
 boolean gameOver;
 boolean opOver;
+boolean pressBot = false;
+int ultimoBot = 5;
 
 void setup(){
   size(1000, 620);
@@ -58,14 +60,12 @@ void setup(){
    *Set HIGH digital pins LIFE
    *Set the value for every light sensor
   */
-  //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
-  /*//////////////////////////////////////////////////////////////////////////////////// descomentar esto
-  arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
+  arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
+  //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
   for (int i = 1; i < 6; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
   }
-  */
   lightS1 = 1;
   lightS2 = 2;
   lightS3 = 3;
@@ -175,9 +175,9 @@ void draw(){
   
   //Respuesta
   fill(255,0,0);//Rojo
-  text("?", 109,195);
+  text(mostrar2, 109,195);
   fill(0,0,255);//Azul
-  text("?", 141,195);
+  text(mostrar1, 141,195);
 
   stroke(0,0,0);
   line(70, 145, 180, 145);
@@ -304,45 +304,109 @@ void checar(){
   
    while(!opOver){
      delay(200);
-     println(arduino.analogRead(lightS1) + " - " + arduino.analogRead(lightS2) + " - " + arduino.analogRead(lightS3) + " - " + arduino.analogRead(lightS4));
-    if(arduino.analogRead(lightS1) <= intensidadLuz){
-      if(board.getResultados()[0] == op.getResultado()){
-         print("Correcto!!");
-         opOver = true;
+     //println(pressBot + " - " + ultimoBot + " - " + arduino.analogRead(lightS1) + " - " + arduino.analogRead(lightS2) + " - " + arduino.analogRead(lightS3) + " - " + arduino.analogRead(lightS4));
+     if(ultimoBot == 1){
+       if(arduino.analogRead(lightS1) > intensidadLuz){
+         pressBot = false;
+         ultimoBot = 5;
+       }
+     }else if(ultimoBot == 2){
+       if(arduino.analogRead(lightS2) > intensidadLuz){
+         pressBot = false;
+         ultimoBot = 5;
+       }
+     }else if(ultimoBot == 3){
+       if(arduino.analogRead(lightS3) > intensidadLuz){
+         pressBot = false;
+         ultimoBot = 5;
+       }
+     }else if(ultimoBot == 4){
+       if(arduino.analogRead(lightS4) > intensidadLuz){
+         pressBot = false;
+         ultimoBot = 5;
+       }
+     }
+     if(!pressBot){
+      if(arduino.analogRead(lightS1) <= intensidadLuz){
+        pressBot = true;
+        ultimoBot = lightS1;
+        if(digito(board.getResultados()[0],op.getResultado())){
+        //if(board.getResultados()[0] == op.getResultado()){
+           print("Correcto!!");
+           if(mDecenas){
+             cInterrogacion(op.getResultado());
+             delay(1000);
+             opOver = true;
+           }else{
+             cInterrogacion(op.getResultado());
+             delay(1000);
+             cambiarRango(true);
+           }
+        }
+        else{
+          print("Respuesta incorrecta!!");
+          print("Intenta de nuevo!");
+        }
       }
-      else{
-        print("Respuesta incorrecta!!");
-        print("Intenta de nuevo!");
+      else if(arduino.analogRead(lightS2) <= intensidadLuz){
+        pressBot = true;
+        ultimoBot = lightS2;
+        if(digito(board.getResultados()[1],op.getResultado())){
+           print("Correcto!!"); 
+           if(mDecenas){
+             cInterrogacion(op.getResultado());
+             delay(1000);
+             opOver = true;
+           }else{
+             cInterrogacion(op.getResultado());
+             delay(1000);
+             cambiarRango(true);
+           }
+        }
+        else{
+          print("Respuesta incorrecta!!");
+          print("Intenta de nuevo!");
+        }
       }
-    }
-    else if(arduino.analogRead(lightS2) <= intensidadLuz){
-      if(board.getResultados()[1] == op.getResultado()){
-         print("Correcto!!"); 
-         opOver = true;
+      else if(arduino.analogRead(lightS3) <= intensidadLuz){
+        pressBot = true;
+        ultimoBot = lightS3;
+        if(digito(board.getResultados()[2],op.getResultado())){
+          print("Correcto!!"); 
+          if(mDecenas){
+             cInterrogacion(op.getResultado());
+             delay(1000);
+             opOver = true;
+           }else{
+             cInterrogacion(op.getResultado());
+             delay(1000);
+             cambiarRango(true);
+           }
+        }
+        else{
+          print("Respuesta incorrecta!!");
+          print("Intenta de nuevo!");
+        }
       }
-      else{
-        print("Respuesta incorrecta!!");
-        print("Intenta de nuevo!");
-      }
-    }
-    else if(arduino.analogRead(lightS3) <= intensidadLuz){
-      if(board.getResultados()[2] == op.getResultado()){
-        print("Correcto!!"); 
-        opOver = true;  
-      }
-      else{
-        print("Respuesta incorrecta!!");
-        print("Intenta de nuevo!");
-      }
-    }
-    else if(arduino.analogRead(lightS4) <= intensidadLuz){
-      if(board.getResultados()[3] == op.getResultado()){
-        print("Correcto!!");
-        opOver = true;
-      }
-      else{
-        print("Respuesta incorrecta!!");
-        print("Intenta de nuevo!");
+      else if(arduino.analogRead(lightS4) <= intensidadLuz){
+        pressBot = true;
+        ultimoBot = lightS4;
+        if(digito(board.getResultados()[3],op.getResultado())){
+          print("Correcto!!");
+          if(mDecenas){
+             cInterrogacion(op.getResultado());
+             delay(1000);
+             opOver = true;
+           }else{
+             cInterrogacion(op.getResultado());
+             delay(1000);
+             cambiarRango(true);
+           }
+        }
+        else{
+          print("Respuesta incorrecta!!");
+          print("Intenta de nuevo!");
+        }
       }
     }
   }
@@ -438,8 +502,10 @@ class BasicThread2 implements Runnable {
 void crearOperacion(){
   /*Generación de número aleatorios 
    *creación de objeto Operación  */
+  cambiarRango(false);
   generarNumeros();
   opOver = false;
+  mostrar1 = mostrar2 = "?";
   numero1 = num1 + "" +num2;
   numero2 = num3 + "" +num4;
   val1 = Integer.parseInt(numero1);
@@ -455,25 +521,26 @@ void calcularRango(int rang){
   }else{
     rangoDer = 2;
     rangoMostrar = tmpRango;
-  }
+  }  
 }
 void cambiarRango(boolean rang){
   if(rang){
     rangoMostrar = tmpRango = 0;
     rangoDer = 1;
+    mDecenas = true;
   }else{
     rangoMostrar = tmpRango = 1;
     rangoDer = 2;
+    mDecenas = false;
   }
 }
-boolean digito(int dig1, int dig2, boolean tipo){//True para Decenas
-  //(dig1+"").substring(rangoMostrar,rangoDer);
+  boolean digito(int dig1, int dig2){//True para Decenas
   int rIzq1;
   int rDer1;
   int rIzq2;
   int rDer2;
   
-  if(!tipo){
+  if(mDecenas){
     if(dig1 > 9 && dig2 > 9){
       rIzq1 = 1;
       rDer1 = 2;
@@ -505,11 +572,14 @@ boolean digito(int dig1, int dig2, boolean tipo){//True para Decenas
     println("true");
     return true;
   }else{
-    println((dig1+"").substring(rIzq1,rDer1)  + " + " +   (dig2+"").substring(rIzq2,rDer2) + " = false");
+    println((dig1+"").substring(rIzq1,rDer1)  + " + " + (dig2+"").substring(rIzq2,rDer2) + " = false");
     return false;
   }
-  
-  
-  
-  
+}
+void cInterrogacion(int num){
+  if(mDecenas){
+    mostrar2 = (num+"").substring(0,1);
+  }else{
+    mostrar1 = (num+"").substring(1,2);
+  }
 }
