@@ -30,7 +30,12 @@ int val1;
 int val2;
 int random;
 
-boolean jugar = true;
+boolean jugar = false; //////////////////////////////Cambiar a True
+boolean mUnidades = true;
+boolean mDecenas = false;
+int rangoMostrar = 1;// es para el Substring
+int tmpRango = 1;// Tiene que ser Copia de rangoMostrar
+int rangoDer = 2;
 
 //Objeto Operación y Board
 Operacion op;
@@ -54,11 +59,13 @@ void setup(){
    *Set the value for every light sensor
   */
   //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
+  /*//////////////////////////////////////////////////////////////////////////////////// descomentar esto
   arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
   for (int i = 1; i < 6; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
   }
+  */
   lightS1 = 1;
   lightS2 = 2;
   lightS3 = 3;
@@ -102,21 +109,27 @@ void draw(){
   ellipse(100, 330, 80, 80);
   textSize(100);
   fill(52,203,205);
-  text(board.getResultados()[0],300 ,360);
+  calcularRango(0);
+  text((board.getResultados()[0]+"").substring(rangoMostrar,rangoDer),300 ,360);
+  //text(board.getResultados()[0],300 ,360);
 
   fill(52,203,205);//Segundo cuadro RECTANGULO
   rect(515, 250, 462, 160, 10);
   fill(100); 
   rect(553, 290, 80, 80);
   fill(148,73,179);
-  text(board.getResultados()[1],790 ,360);
+  calcularRango(1);
+  text((board.getResultados()[1]+"").substring(rangoMostrar,rangoDer),790 ,360);
+  //text(board.getResultados()[1],790 ,360);
   
   fill(101,191,61);//Tercer cuadro TRIANGULO
   rect(25, 435, 462, 160, 10);
   fill(100);
   triangle(103, 475, 63, 555, 143, 555);
   fill(254,53,82);
-  text(board.getResultados()[2],300 ,545);
+  calcularRango(2);
+  text((board.getResultados()[2]+"").substring(rangoMostrar,rangoDer),300 ,545);
+  //text(board.getResultados()[2],300 ,545);
   
   fill(254,53,82);//Cuarto cuadro HEXAGONO
   rect(515, 435, 462, 160, 10);
@@ -131,7 +144,12 @@ void draw(){
   line(620, 473, 644, 514); // PRIMERA LINEA DERECHO SUPERIOR
   line(644, 514, 620, 556); // SEGUNDA LINEA DERECHO INFERIOR
   fill(101,191,61);
-  text(board.getResultados()[3],790 ,545);
+  calcularRango(3);
+  text((board.getResultados()[3]+"").substring(rangoMostrar,rangoDer),790 ,545);
+  //text(board.getResultados()[3],790 ,545);
+  /*text(board.getResultados()[3],790 ,545);
+  println((test+"").substring(0,1) + " - ");
+  */
   
   textAlign(CENTER);
   textSize(50);
@@ -429,4 +447,21 @@ void crearOperacion(){
   op = new Operacion(val1, val2);
   println(val1 + " + " + val2 + " = " + (val1+val2));
   board = new Board(op);
+}
+void calcularRango(int rang){
+  if(board.getResultados()[rang] < 10 ){
+    rangoMostrar = 0;
+    rangoDer = 1;
+  }else{
+    rangoDer = 2;
+    rangoMostrar = tmpRango;
+  }
+  //text((board.getResultados()[3]+"").substring(rangoMostrar,2),790 ,545);
+}
+void cambiarRango(boolean rang){
+  if(rang){
+    rangoMostrar = tmpRango = 0;
+  }else{
+    rangoMostrar = tmpRango = 1;
+  }
 }
