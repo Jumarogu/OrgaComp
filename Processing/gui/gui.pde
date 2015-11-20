@@ -304,7 +304,7 @@ void checar(){
   
    while(!opOver){
      delay(200);
-     //println(pressBot + " - " + ultimoBot + " - " + arduino.analogRead(lightS1) + " - " + arduino.analogRead(lightS2) + " - " + arduino.analogRead(lightS3) + " - " + arduino.analogRead(lightS4));
+     println(pressBot + " - " + ultimoBot + " - " + arduino.analogRead(lightS1) + " - " + arduino.analogRead(lightS2) + " - " + arduino.analogRead(lightS3) + " - " + arduino.analogRead(lightS4));
      if(ultimoBot == 1){
        if(arduino.analogRead(lightS1) > intensidadLuz){
          pressBot = false;
@@ -533,6 +533,7 @@ void cambiarRango(boolean rang){
     rangoDer = 2;
     mDecenas = false;
   }
+  println("mDecenas: " + mDecenas);
 }
   boolean digito(int dig1, int dig2){//True para Decenas
   int rIzq1;
@@ -542,37 +543,43 @@ void cambiarRango(boolean rang){
   
   if(mDecenas){
     if(dig1 > 9 && dig2 > 9){
-      rIzq1 = 1;
-      rDer1 = 2;
-      rIzq2 = 1;
-      rDer2 = 2;
+      //println("Primero");
+      rIzq1 = 0;
+      rDer1 = 1;
+      rIzq2 = 0;
+      rDer2 = 1;
     }else if(dig1 > 9 && dig2 < 10){
+      //println("Seg");
       rIzq1 = 1;
       rDer1 = 2;
       rIzq2 = 0;
       rDer2 = 1;
     }else if(dig1 < 10 && dig2 > 9){
+      //println("Ter");
       rIzq1 = 0;
       rDer1 = 1;
       rIzq2 = 1;
       rDer2 = 2;
     }else{
+      //println("Cuar");
       rIzq1 = 0;
       rDer1 = 1;
       rIzq2 = 0;
       rDer2 = 1;
     }
   }else{
-    rIzq1 = 0;
-    rDer1 = 1;
-    rIzq2 = 0;
-    rDer2 = 1;
+    //println("quint");
+    rIzq1 = 1;
+    rDer1 = 2;
+    rIzq2 = 1;
+    rDer2 = 2;
   }
+  //println("");
   if((dig1+"").substring(rIzq1,rDer1).equals((dig2+"").substring(rIzq2,rDer2))){
-    println("true");
+    println((dig1+"").substring(rIzq1,rDer1)  + " = " + (dig2+"").substring(rIzq2,rDer2) + " => True");
     return true;
   }else{
-    println((dig1+"").substring(rIzq1,rDer1)  + " + " + (dig2+"").substring(rIzq2,rDer2) + " = false");
+    println((dig1+"").substring(rIzq1,rDer1)  + " = " + (dig2+"").substring(rIzq2,rDer2) + " => False");
     return false;
   }
 }
