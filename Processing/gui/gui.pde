@@ -456,8 +456,6 @@ void calcularRango(int rang){
     rangoDer = 2;
     rangoMostrar = tmpRango;
   }
-  cambiarRango(true);
-  //text((board.getResultados()[3]+"").substring(rangoMostrar,2),790 ,545);
 }
 void cambiarRango(boolean rang){
   if(rang){
@@ -467,4 +465,51 @@ void cambiarRango(boolean rang){
     rangoMostrar = tmpRango = 1;
     rangoDer = 2;
   }
+}
+boolean digito(int dig1, int dig2, boolean tipo){//True para Decenas
+  //(dig1+"").substring(rangoMostrar,rangoDer);
+  int rIzq1;
+  int rDer1;
+  int rIzq2;
+  int rDer2;
+  
+  if(!tipo){
+    if(dig1 > 9 && dig2 > 9){
+      rIzq1 = 1;
+      rDer1 = 2;
+      rIzq2 = 1;
+      rDer2 = 2;
+    }else if(dig1 > 9 && dig2 < 10){
+      rIzq1 = 1;
+      rDer1 = 2;
+      rIzq2 = 0;
+      rDer2 = 1;
+    }else if(dig1 < 10 && dig2 > 9){
+      rIzq1 = 0;
+      rDer1 = 1;
+      rIzq2 = 1;
+      rDer2 = 2;
+    }else{
+      rIzq1 = 0;
+      rDer1 = 1;
+      rIzq2 = 0;
+      rDer2 = 1;
+    }
+  }else{
+    rIzq1 = 0;
+    rDer1 = 1;
+    rIzq2 = 0;
+    rDer2 = 1;
+  }
+  if((dig1+"").substring(rIzq1,rDer1).equals((dig2+"").substring(rIzq2,rDer2))){
+    println("true");
+    return true;
+  }else{
+    println((dig1+"").substring(rIzq1,rDer1)  + " + " +   (dig2+"").substring(rIzq2,rDer2) + " = false");
+    return false;
+  }
+  
+  
+  
+  
 }
