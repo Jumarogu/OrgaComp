@@ -456,12 +456,15 @@ void calcularRango(int rang){
     rangoDer = 2;
     rangoMostrar = tmpRango;
   }
+  cambiarRango(true);
   //text((board.getResultados()[3]+"").substring(rangoMostrar,2),790 ,545);
 }
 void cambiarRango(boolean rang){
   if(rang){
     rangoMostrar = tmpRango = 0;
+    rangoDer = 1;
   }else{
     rangoMostrar = tmpRango = 1;
+    rangoDer = 2;
   }
 }
