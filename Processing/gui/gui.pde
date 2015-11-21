@@ -65,6 +65,8 @@ boolean gameOver;
 boolean opOver;
 boolean pressBot = false;
 int ultimoBot = 5;
+int respuestasConsecutivas = 0;
+int corazones = 0;
 
 
 void setup(){
@@ -470,7 +472,7 @@ void checar(){
        }
      }
      if(!pressBot){
-      if(arduino.analogRead(lightS1) <= intensidadLuz1){
+      if(arduino.analogRead(lightS1) <= intensidadLuz1 && !respErr1){
         pressBot = true;
         ultimoBot = lightS1;
         if(digito(board.getResultados()[0],op.getResultado())){
@@ -489,10 +491,11 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          agregarCorazon(false);
           respErr1 = true;
         }
       }
-      else if(arduino.analogRead(lightS2) <= intensidadLuz2){
+      else if(arduino.analogRead(lightS2) <= intensidadLuz2 && !respErr2){
         pressBot = true;
         ultimoBot = lightS2;
         if(digito(board.getResultados()[1],op.getResultado())){
@@ -510,10 +513,11 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          agregarCorazon(false);
           respErr2 = true;
         }
       }
-      else if(arduino.analogRead(lightS3) <= intensidadLuz3){
+      else if(arduino.analogRead(lightS3) <= intensidadLuz3 && !respErr3){
         pressBot = true;
         ultimoBot = lightS3;
         if(digito(board.getResultados()[2],op.getResultado())){
@@ -531,10 +535,11 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          agregarCorazon(false);
           respErr3 = true;
         }
       }
-      else if(arduino.analogRead(lightS4) <= intensidadLuz4){
+      else if(arduino.analogRead(lightS4) <= intensidadLuz4 && !respErr4){
         pressBot = true;
         ultimoBot = lightS4;
         if(digito(board.getResultados()[3],op.getResultado())){
@@ -553,6 +558,7 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          agregarCorazon(false);
           respErr4 = true;
         }
       }
@@ -675,6 +681,7 @@ class BasicThread2 implements Runnable {
       while(jugar){
         checar();
         println("\tNueva Operacion...");
+        agregarCorazon(true);
         delay(1000);
         crearOperacion();
       }
@@ -794,5 +801,35 @@ void cInterrogacion(int num){
     mostrar2 = (num+"").substring(0,1);
   }else{
     mostrar1 = (num+"").substring(1,2);
+  }
+}
+
+void agregarCorazon(boolean agr){
+  println("\t<Corazones>");
+  if(agr){
+    respuestasConsecutivas++;
+    println("\t\tRespuestas Correctas Consecutivas: " + respuestasConsecutivas);
+    if(respuestasConsecutivas > 3){
+      println("\t\tAgregar Corazon!");
+      corazones++;
+    }
+  }else{
+    respuestasConsecutivas = 0;
+    println("\t\tRespuestas Correctas Consecutivas: " + respuestasConsecutivas);
+    corazones--;
+    println("\t\tQuitar Corazon");
+  }
+  if(corazones == 0){
+    println("\t\t0 LED's prendidos");
+  }else if(corazones == 1){
+    println("\t\t1 LED's prendidos");
+  }else if(corazones == 2){
+    println("\t\t2 LED's prendidos");
+  }else if(corazones == 3){
+    println("\t\t3 LED's prendidos");
+  }else if(corazones == 4){
+    println("\t\t4 LED's prendidos");
+  }else if(corazones == 5){
+    println("\t\t5 LED's prendidos");
   }
 }
