@@ -15,6 +15,10 @@ boolean calibrado2 = false;
 boolean calibrado3 = false;
 boolean calibrado4 = false;
 boolean calibrar = true;//////////////////////////////////////////////Cambiar a True
+boolean respErr1 = false;
+boolean respErr2 = false;
+boolean respErr3 = false;
+boolean respErr4 = false;
 
 int luzOrg1;
 int luzOrg2;
@@ -63,7 +67,6 @@ int ultimoBot = 5;
 
 
 void setup(){
-  cambiarRango(true);
   size(1000, 620);
   background(201,89,13);
   //Seting boolean variables to false
@@ -74,7 +77,7 @@ void setup(){
    *Set the Arduino digital pins as OUTPUTS.
    *Set HIGH digital pins LIFE
    *Set the value for every light sensor
-  */
+  /*/
   String platformName = System.getProperty("os.name");
   platformName = platformName.toLowerCase();
   if (platformName.indexOf("mac") != -1) {
@@ -223,116 +226,159 @@ void draw(){
 
 //RECUADRO SUPERIOR-DERECHO ***************
 
+  //Opacar Respuestas Erroneas
+  color c = color(0, 160);
+  fill(c);
+  if(respErr4){//Circulo
+    rect(515, 435, 462, 160, 10);
+  }
+  if(respErr3){//Cuadrado
+    rect(25, 435, 462, 160, 10);
+  }
+  if(respErr1){//Hexagono
+    rect(25, 250, 462, 160, 10);
+  }
+  if(respErr2){//Triangulo
+    rect(515, 250, 462, 160, 10);
+  }
+  fill(0);
+
 ////////
   ///Bolitas para contar************************
-  fill(255,0,0);//Unidades
-  rect(275, 50, 180, 150, 10);
-  fill(252,166,3);
-  rect(280, 55, 170, 140, 10);
-  line(280, 124, 450, 124);
-  line(280, 126, 450, 126);
-  
-  fill(0,0,255);//Decenas
-  rect(495, 50, 180, 150, 10);
-  fill(252,166,3);
-  rect(500, 55, 170, 140, 10);
-  line(500, 124, 670, 124);
-  line(500, 126, 670, 126);
-  
-  textSize(20);
-  fill(255,0,0);
-  text("Decenas", 365,45);
-  fill(0,0,255);
-  text("Unidades", 585,45);
-  textSize(50);
-  //////////////Primer digito Decenas
-  int dist=0;
-  int posY = 0;
-  if(num1 != 0){
-    if(num1 < 5){
-      dist = 170/ num1;
-      posY +=12;
+  if(respErr1 || respErr2 || respErr3 || respErr4){
+    fill(255,0,0);//Decenas
+    rect(275, 50, 180, 150, 10);
+    fill(252,166,3);
+    rect(280, 55, 170, 140, 10);
+    line(280, 124, 450, 124);
+    line(280, 126, 450, 126);
+    
+    /*fill(0,0,255);//Unidades
+    rect(495, 50, 180, 150, 10);
+    fill(252,166,3);
+    rect(500, 55, 170, 140, 10);
+    line(500, 124, 670, 124);
+    line(500, 126, 670, 126);*/
+    fill(0,0,255);//Unidades
+    rect(595, 50, 180, 150, 10);
+    fill(252,166,3);
+    rect(600, 55, 170, 140, 10);
+    line(600, 124, 770, 124);
+    line(600, 126, 770, 126);
+    
+    textSize(20);
+    fill(255,0,0);
+    text("Decenas", 365,45);
+    fill(0,0,255);
+    text("Unidades", 685,45);
+    textSize(50);
+    fill(0);
+    text("=", 810, 140);
+    text("=", 490, 140);
+    fill(0,0,255);
+    text(mostrar1, 850, 140);//Unidades
+    fill(255,0,0);
+    text(mostrar2, 530, 140);//Decenas
+    //////////////Primer digito Decenas
+    int dist=0;
+    int posY = 0;
+    if(num1 != 0){
+      if(num1 < 5){
+        dist = 170/ num1;
+        posY +=12;
+      }else{
+        dist = 170 / 5;
+      }
+    }
+    int posX = dist;
+    fill(255,0,0);
+    for(int i = 0; i < num1; i++){
+      ellipse(280 + (posX - dist/2),80 + (posY),20,20);
+      posX+=dist;
+      if(i == 4 && num1 != 5){
+        dist = 170 / (num1 - 5);
+        posX = dist;
+        posY += 25;
+      }
+    }
+    //////////////Segundo Digito Decenas
+    dist=0;
+    posY = 0;
+    if(num3 != 0){
+      if(num3 < 5){
+        dist = 170/ num3;
+        posY +=12;
+      }else{
+        dist = 170 / 5;
+      }
+    }
+    posX = dist;
+    for(int i = 0; i < num3; i++){
+      ellipse(280 + (posX - dist/2),145 + (posY),20,20);
+      posX+=dist;
+      if(i == 4 && num3 != 5){
+        dist = 170 / (num3 - 5);
+        posX = dist;
+        posY += 25;
+      }
+    }
+    //////////////Primer digito Unidades
+    dist=0;
+    posY = 0;
+    if(num2 != 0){
+      if(num2 < 5){
+        dist = 170/ num2;
+        posY +=12;
+      }else{
+        dist = 170 / 5;
+      }
+    }
+    posX = dist;
+    fill(0,0,255);
+    for(int i = 0; i < num2; i++){
+      ellipse(600 + (posX - dist/2),80 + (posY),20,20);
+      posX+=dist;
+      if(i == 4 && num2 != 5){
+        dist = 170 / (num2 - 5);
+        posX = dist;
+        posY += 25;
+      }
+    }
+    //////////////Segundo digito Unidades
+    dist=0;
+    posY = 0;
+    if(num4 != 0){
+      if(num4 < 5){
+        dist = 170/ num4;
+        posY +=12;
+      }else{
+        dist = 170 / 5;
+      }
+    }
+    posX = dist;
+    for(int i = 0; i < num4; i++){
+      ellipse(600 + (posX - dist/2),145 + (posY),20,20);
+      posX+=dist;
+      if(i == 4 && num4 != 5){
+        dist = 170 / (num4 - 5);
+        posX = dist;
+        posY += 25;
+      }
+    }
+  }else{
+    textSize(40);
+    text("Tu puedes! cual es \n la suma de " + ((mDecenas)?num1:num2) + "+" + ((mDecenas)?num3:num4) + "?", 600, 120);
+    if(mDecenas){
+      fill(255,0,0);
     }else{
-      dist = 170 / 5;
+      fill(0,0,255);
     }
-  }
-  int posX = dist;
-  fill(255,0,0);
-  for(int i = 0; i < num1; i++){
-    ellipse(280 + (posX - dist/2),80 + (posY),20,20);
-    posX+=dist;
-    if(i == 4 && num1 != 5){
-      dist = 170 / (num1 - 5);
-      posX = dist;
-      posY += 25;
-    }
-  }
-  //////////////Segundo Digito Decenas
-  dist=0;
-  posY = 0;
-  if(num3 != 0){
-    if(num3 < 5){
-      dist = 170/ num3;
-      posY +=12;
-    }else{
-      dist = 170 / 5;
-    }
-  }
-  posX = dist;
-  for(int i = 0; i < num3; i++){
-    ellipse(280 + (posX - dist/2),145 + (posY),20,20);
-    posX+=dist;
-    if(i == 4 && num3 != 5){
-      dist = 170 / (num3 - 5);
-      posX = dist;
-      posY += 25;
-    }
-  }
-  //////////////Primer digito Unidades
-  dist=0;
-  posY = 0;
-  if(num2 != 0){
-    if(num2 < 5){
-      dist = 170/ num2;
-      posY +=12;
-    }else{
-      dist = 170 / 5;
-    }
-  }
-  posX = dist;
-  fill(0,0,255);
-  for(int i = 0; i < num2; i++){
-    ellipse(500 + (posX - dist/2),80 + (posY),20,20);
-    posX+=dist;
-    if(i == 4 && num2 != 5){
-      dist = 170 / (num2 - 5);
-      posX = dist;
-      posY += 25;
-    }
-  }
-  //////////////Segundo digito Unidades
-  dist=0;
-  posY = 0;
-  if(num4 != 0){
-    if(num4 < 5){
-      dist = 170/ num4;
-      posY +=12;
-    }else{
-      dist = 170 / 5;
-    }
-  }
-  posX = dist;
-  for(int i = 0; i < num4; i++){
-    ellipse(500 + (posX - dist/2),145 + (posY),20,20);
-    posX+=dist;
-    if(i == 4 && num4 != 5){
-      dist = 170 / (num4 - 5);
-      posX = dist;
-      posY += 25;
-    }
+    text(((mDecenas)?num1:num2), 680, 180);
+    text(((mDecenas)?num3:num4), 737, 180); 
   }
   
   if(calibrar){
+    textSize(50);
     fill(100);
     rect(0,0, 1000, 620);
     fill(0,0,255);
@@ -428,6 +474,7 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          respErr1 = true;
         }
       }
       else if(arduino.analogRead(lightS2) <= intensidadLuz2){
@@ -448,6 +495,7 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          respErr2 = true;
         }
       }
       else if(arduino.analogRead(lightS3) <= intensidadLuz3){
@@ -468,6 +516,7 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          respErr3 = true;
         }
       }
       else if(arduino.analogRead(lightS4) <= intensidadLuz4){
@@ -488,6 +537,7 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          respErr4 = true;
         }
       }
     }
@@ -631,11 +681,15 @@ void crearOperacion(){
 void calcularRango(int rang){
   if(board.getResultados()[rang] < 10 ){
     rangoMostrar = 0;
+    println("RangoMostrar = 0  ->" + board.getResultados()[rang]);
   }else{
+    println("Rango Mostrar = TMP (" + tmpRango + ")");
     rangoMostrar = tmpRango;
-  }  
+  }
+  println(rangoMostrar);
 }
 void cambiarRango(boolean rang){
+  println("CambiarRango(" + rang + ")");
   if(rang){
     rangoMostrar = tmpRango = 0;
     mDecenas = true;
@@ -643,6 +697,10 @@ void cambiarRango(boolean rang){
     rangoMostrar = tmpRango = 1;
     mDecenas = false;
   }
+  respErr1 = false;
+  respErr2 = false;
+  respErr3 = false;
+  respErr4 = false;
 }
   boolean digito(int dig1, int dig2){//True para Decenas
   int rIzq1;
