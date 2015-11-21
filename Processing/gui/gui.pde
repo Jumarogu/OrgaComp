@@ -6,7 +6,20 @@ int lightS1;
 int lightS2;
 int lightS3;
 int lightS4;
-int intensidadLuz;
+int intensidadLuz1;
+int intensidadLuz2;
+int intensidadLuz3;
+int intensidadLuz4;
+boolean calibrado1 = false;
+boolean calibrado2 = false;
+boolean calibrado3 = false;
+boolean calibrado4 = false;
+
+int luzOrg1;
+int luzOrg2;
+int luzOrg3;
+int luzOrg4;
+
 
 //Arduino variables
 Arduino arduino;
@@ -41,11 +54,14 @@ int rangoDer = 2;
 Operacion op;
 Board board;
 
+
 //Variables booleanas
 boolean gameOver;
 boolean opOver;
 boolean pressBot = false;
 int ultimoBot = 5;
+boolean calibrar = true;
+
 
 void setup(){
   size(1000, 620);
@@ -53,7 +69,6 @@ void setup(){
   //Seting boolean variables to false
   gameOver = false;
   opOver = false;
-  intensidadLuz =4;
   
   /*Creación objeto Arduino
    *Set the Arduino digital pins as OUTPUTS.
@@ -99,6 +114,10 @@ void draw(){
 //}
 
 //GUI ******************************
+  //Fondo
+  fill(201,89,13);
+  rect(0,0,1000,620);
+
   fill(102);//Cuadro de operacion
   rect(25, 25, 200, 200, 10);
 
@@ -304,38 +323,85 @@ void draw(){
       posY += 25;
     }
   }
-  //checar();
-  //println(arduino.analogRead(1));
+  
+  if(calibrar){
+    fill(100);
+    rect(0,0, 1000, 620);
+    fill(0,0,255);
+    rect(400,270, 200, 80,20);
+    fill(0);
+    text("Jugar!", 500, 325);
+    
+    textSize(13);
+    text("Para empezar a jugar pasa tu mano por las cuatro figuras \t hasta que veas cuatro 'OK'", 500, 380);
+    
+    noStroke();
+    fill(254,53,82);
+    triangle(156, 430, 196, 430, 216, 470);
+    triangle(216, 470, 196, 510, 156, 510);
+    triangle(156, 510, 136, 470, 156, 430);
+    triangle(156, 429, 217, 470, 156, 511);
+    stroke(1);
+    line(156, 430, 196, 430);//Superior
+    line(196, 430, 216, 470);//Superior Derecha
+    line(216, 470, 196, 510);//Inferior Derecha
+    line(196, 510, 156, 510);//Inferior
+    line(156, 510, 136, 470);//Inferior Izquierda
+    line(136, 470, 156, 430);//Superior Izquierda
+    fill(101,191,61);
+    triangle(392, 430, 352, 510, 432, 510);
+    fill(52,203,205);
+    rect(568, 430,80,80);
+    fill(148,73,179);
+    ellipse(824,470,80,80);
+    
+    textSize(40);
+    fill(0,0,255);
+    if(calibrado1){
+      text("OK!", 180, 485);
+    }
+    if(calibrado2){
+      text("OK!", 396, 485);
+    }
+    if(calibrado3){
+      text("OK!", 611, 485);
+    }
+    if(calibrado4){
+      text("OK!", 828, 485);
+    }
+    if(calibrado1 && calibrado2 && calibrado3 && calibrado4){
+      calibrar = false;
+    }
+  }
 }
 
 void checar(){
-  
    while(!opOver){
      delay(200);
      println(pressBot + " - " + ultimoBot + " - " + arduino.analogRead(lightS1) + " - " + arduino.analogRead(lightS2) + " - " + arduino.analogRead(lightS3) + " - " + arduino.analogRead(lightS4));
      if(ultimoBot == 1){
-       if(arduino.analogRead(lightS1) > intensidadLuz){
+       if(arduino.analogRead(lightS1) > intensidadLuz1){
          pressBot = false;
          ultimoBot = 5;
        }
      }else if(ultimoBot == 2){
-       if(arduino.analogRead(lightS2) > intensidadLuz){
+       if(arduino.analogRead(lightS2) > intensidadLuz2){
          pressBot = false;
          ultimoBot = 5;
        }
      }else if(ultimoBot == 3){
-       if(arduino.analogRead(lightS3) > intensidadLuz){
+       if(arduino.analogRead(lightS3) > intensidadLuz3){
          pressBot = false;
          ultimoBot = 5;
        }
      }else if(ultimoBot == 4){
-       if(arduino.analogRead(lightS4) > intensidadLuz){
+       if(arduino.analogRead(lightS4) > intensidadLuz4){
          pressBot = false;
          ultimoBot = 5;
        }
      }
      if(!pressBot){
-      if(arduino.analogRead(lightS1) <= intensidadLuz){
+      if(arduino.analogRead(lightS1) <= intensidadLuz1){
         pressBot = true;
         ultimoBot = lightS1;
         if(digito(board.getResultados()[0],op.getResultado())){
@@ -356,7 +422,7 @@ void checar(){
           print("Intenta de nuevo!");
         }
       }
-      else if(arduino.analogRead(lightS2) <= intensidadLuz){
+      else if(arduino.analogRead(lightS2) <= intensidadLuz2){
         pressBot = true;
         ultimoBot = lightS2;
         if(digito(board.getResultados()[1],op.getResultado())){
@@ -376,7 +442,7 @@ void checar(){
           print("Intenta de nuevo!");
         }
       }
-      else if(arduino.analogRead(lightS3) <= intensidadLuz){
+      else if(arduino.analogRead(lightS3) <= intensidadLuz3){
         pressBot = true;
         ultimoBot = lightS3;
         if(digito(board.getResultados()[2],op.getResultado())){
@@ -396,7 +462,7 @@ void checar(){
           print("Intenta de nuevo!");
         }
       }
-      else if(arduino.analogRead(lightS4) <= intensidadLuz){
+      else if(arduino.analogRead(lightS4) <= intensidadLuz4){
         pressBot = true;
         ultimoBot = lightS4;
         if(digito(board.getResultados()[3],op.getResultado())){
@@ -496,8 +562,17 @@ class Board{
 class BasicThread2 implements Runnable {
     // This method is called when the thread runs
     public void run() {
+      delay(1000);
+      
+      luzOrg1 = arduino.analogRead(lightS1);
+      luzOrg2 = arduino.analogRead(lightS2);
+      luzOrg3 = arduino.analogRead(lightS3);
+      luzOrg4 = arduino.analogRead(lightS4);
+      
+      while(calibrar){
+        calibrarBotones();
+      }
       while(jugar){
-        delay(1000);
         checar();
         println("Nueva Operacion!");
         delay(1000);
@@ -505,7 +580,25 @@ class BasicThread2 implements Runnable {
       }
     }
 }
-
+void calibrarBotones(){
+  
+  if(luzOrg1 > arduino.analogRead(lightS1)/2){
+    intensidadLuz1 = arduino.analogRead(lightS1) + 5;
+    calibrado1 = true;
+  }
+  if(luzOrg2 > arduino.analogRead(lightS2)/2){
+    intensidadLuz2 = arduino.analogRead(lightS2) + 5;
+    calibrado2 = true;
+  }if(luzOrg3 > arduino.analogRead(lightS3)/2){
+    intensidadLuz3 = arduino.analogRead(lightS3) + 5;
+    calibrado3 = true;
+  }
+  if(luzOrg4 > arduino.analogRead(lightS4)/2){
+    intensidadLuz4 = arduino.analogRead(lightS4) + 5;
+    calibrado4 = true;
+  }
+  
+}
 
 void crearOperacion(){
   /*Generación de número aleatorios 
