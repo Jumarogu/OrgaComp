@@ -88,7 +88,7 @@ void setup(){
     arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
   }
   //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
-  arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
+  //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
   
   for (int i = 1; i < 6; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
@@ -602,6 +602,7 @@ class BasicThread2 implements Runnable {
       luzOrg4 = 30;
       */
       while(calibrar){
+        delay(1000);
         calibrarBotones();
       }
       while(jugar){
