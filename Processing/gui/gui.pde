@@ -81,7 +81,12 @@ void setup(){
   gameOver = false;
   opOver = false;
   println("<Setup>");
-  println("\tJugar: " + jugar + "\n\tCalibrar: " + calibrar + "\n\tMostrar Decenas: " + mDecenas + "\n\tBotones Presionados: " + pressBot);
+  println("\tJugar: " + jugar + 
+          "\n\tCalibrar: " + calibrar + 
+          "\n\tMostrar Decenas: " + mDecenas + 
+          "\n\tBotones Presionados: " + pressBot + 
+          "\n\tGame Over: " + gameOver + 
+          "\n\tOp Over: " + opOver);
   
   /*Creación objeto Arduino
    *Set the Arduino digital pins as OUTPUTS.
@@ -168,7 +173,6 @@ void draw(){
   fill(52,203,205);
   calcularRango(0);
   text((board.getResultados()[0]+"").substring(rangoMostrar,rangoMostrar+1),300 ,360);
-  //text(board.getResultados()[0],300 ,360);
 
   fill(101,191,61);//Segundo cuadro TRIANGULO
   rect(515, 250, 462, 160, 10);
@@ -177,30 +181,22 @@ void draw(){
   fill(148,73,179);
   calcularRango(1);
   text((board.getResultados()[1]+"").substring(rangoMostrar,rangoMostrar+1),790 ,360);
-  //text(board.getResultados()[1],790 ,360);
   
   fill(52,203,205);//Tercer cuadro CUADRADO
   rect(25, 435, 462, 160, 10);
   fill(100);
-//  triangle(103, 475, 63, 555, 143, 555);
   rect(63, 475, 80, 80);
   fill(254,53,82);
   calcularRango(2);
   text((board.getResultados()[2]+"").substring(rangoMostrar,rangoMostrar+1),300 ,545);
-  //text(board.getResultados()[2],300 ,545);
   
   fill(148,73,179);//Cuarto cuadro CIRCULO
   rect(515, 435, 462, 160, 10);
   fill(100);
   ellipse(591, 516, 80, 80);
-  
   fill(101,191,61);
   calcularRango(3);
   text((board.getResultados()[3]+"").substring(rangoMostrar,rangoMostrar+1),790 ,545);
-  //text(board.getResultados()[3],790 ,545);
-  /*text(board.getResultados()[3],790 ,545);
-  println((test+"").substring(0,1) + " - ");
-  */
   
   textAlign(CENTER);
   textSize(50);
@@ -266,12 +262,6 @@ void draw(){
     line(280, 124, 450, 124);
     line(280, 126, 450, 126);
     
-    /*fill(0,0,255);//Unidades
-    rect(495, 50, 180, 150, 10);
-    fill(252,166,3);
-    rect(500, 55, 170, 140, 10);
-    line(500, 124, 670, 124);
-    line(500, 126, 670, 126);*/
     fill(0,0,255);//Unidades
     rect(595, 50, 180, 150, 10);
     fill(252,166,3);
@@ -476,7 +466,6 @@ void checar(){
         pressBot = true;
         ultimoBot = lightS1;
         if(digito(board.getResultados()[0],op.getResultado())){
-        //if(board.getResultados()[0] == op.getResultado()){
            print("Correcto!!");
            if(mDecenas){
              cInterrogacion(op.getResultado());
@@ -665,14 +654,7 @@ class BasicThread2 implements Runnable {
       println("\t\tSensor 1:" + luzOrg1);
       println("\t\tSensor 2:" + luzOrg2);
       println("\t\tSensor 3:" + luzOrg3);
-      println("\t\tSensor 4:" + luzOrg4);
-      /*
-      luzOrg1 = 30;
-      luzOrg2 = 30;
-      luzOrg3 = 30;
-      luzOrg4 = 30;
-      */
-      println("");
+      println("\t\tSensor 4:" + luzOrg4 + "\n");
       while(calibrar){
         calibrarBotones();
       }
@@ -690,22 +672,26 @@ class BasicThread2 implements Runnable {
 }
 void calibrarBotones(){
   delay(1000);
+  
   if(luzOrg1 > arduino.analogRead(lightS1)/2){
     intensidadLuz1 = arduino.analogRead(lightS1) + 5;
     calibrado1 = true;
+    println("\tBoton 1 Calibrado a: " + intensidadLuz1);
   }
   if(luzOrg2 > arduino.analogRead(lightS2)/2){
     intensidadLuz2 = arduino.analogRead(lightS2) + 5;
     calibrado2 = true;
+    println("\tBoton 2 Calibrado a: " + intensidadLuz2);
   }if(luzOrg3 > arduino.analogRead(lightS3)/2){
     intensidadLuz3 = arduino.analogRead(lightS3) + 5;
     calibrado3 = true;
+    println("\tBoton 3 Calibrado a: " + intensidadLuz3);
   }
   if(luzOrg4 > arduino.analogRead(lightS4)/2){
     intensidadLuz4 = arduino.analogRead(lightS4) + 5;
     calibrado4 = true;
+    println("\tBoton 4 Calibrado a: " + intensidadLuz4);
   }
-  
 }
 
 void crearOperacion(){
@@ -729,7 +715,6 @@ void calcularRango(int rang){
   }else{
     rangoMostrar = tmpRango;
   }
-  println(rangoMostrar);
 }
 void cambiarRango(boolean rang){
   if(rang){
@@ -745,7 +730,7 @@ void cambiarRango(boolean rang){
   respErr3 = false;
   respErr4 = false;
 }
-  boolean digito(int dig1, int dig2){//True para Decenas
+  boolean digito(int dig1, int dig2){
   int rIzq1;
   int rDer1;
   int rIzq2;
@@ -753,38 +738,32 @@ void cambiarRango(boolean rang){
   
   if(mDecenas){
     if(dig1 > 9 && dig2 > 9){
-      //println("Primero");
       rIzq1 = 0;
       rDer1 = 1;
       rIzq2 = 0;
       rDer2 = 1;
     }else if(dig1 > 9 && dig2 < 10){
-      //println("Seg");
       rIzq1 = 1;
       rDer1 = 2;
       rIzq2 = 0;
       rDer2 = 1;
     }else if(dig1 < 10 && dig2 > 9){
-      //println("Ter");
       rIzq1 = 0;
       rDer1 = 1;
       rIzq2 = 1;
       rDer2 = 2;
     }else{
-      //println("Cuar");
       rIzq1 = 0;
       rDer1 = 1;
       rIzq2 = 0;
       rDer2 = 1;
     }
   }else{
-    //println("quint");
     rIzq1 = 1;
     rDer1 = 2;
     rIzq2 = 1;
     rDer2 = 2;
   }
-  //println("");
   if((dig1+"").substring(rIzq1,rDer1).equals((dig2+"").substring(rIzq2,rDer2))){
     println("\t" + (dig1+"").substring(rIzq1,rDer1)  + " = " + (dig2+"").substring(rIzq2,rDer2) + " => True");
     if(!mDecenas){
