@@ -62,10 +62,12 @@ void setup(){
   */
   arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
   //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
+  
   for (int i = 1; i < 6; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
   }
+  
   lightS1 = 1;
   lightS2 = 2;
   lightS3 = 3;
@@ -103,46 +105,52 @@ void draw(){
   fill(252,166,3);//Cuadro de explicacion
   rect(250, 25, 725, 200, 10);
 
-  fill(148,73,179);//Primer cuadro ELIPSE
+  fill(254,53,82);//Primer cuadro HEXAGONO
   rect(25, 250, 462, 160, 10);
   fill(100);
-  ellipse(100, 330, 80, 80);
+  noStroke();
+  triangle(72, 290, 128, 290, 149, 330);//Triangulos para llenar el Hexagono
+  triangle(149, 330, 128, 370, 72, 370);
+  triangle(72, 370, 51, 330, 72, 290);
+  triangle(72, 290, 149, 330, 72, 370);
+  stroke(1);
+  line(72, 290, 128, 290); // Superior
+  line(128, 290, 149, 330); // Derecha Superior
+  line(149, 330, 128, 370); // Derecha Inferior
+  line(128, 370, 72, 370); // Inferior
+  line(72, 370, 51, 330); // Izquierda Inferior
+  line(51, 330, 72, 290); // Izquierda Superior
+  
   textSize(100);
   fill(52,203,205);
   calcularRango(0);
   text((board.getResultados()[0]+"").substring(rangoMostrar,rangoDer),300 ,360);
   //text(board.getResultados()[0],300 ,360);
 
-  fill(52,203,205);//Segundo cuadro RECTANGULO
+  fill(101,191,61);//Segundo cuadro TRIANGULO
   rect(515, 250, 462, 160, 10);
   fill(100); 
-  rect(553, 290, 80, 80);
+  triangle(553, 370, 593, 290, 633, 370);
   fill(148,73,179);
   calcularRango(1);
   text((board.getResultados()[1]+"").substring(rangoMostrar,rangoDer),790 ,360);
   //text(board.getResultados()[1],790 ,360);
   
-  fill(101,191,61);//Tercer cuadro TRIANGULO
+  fill(52,203,205);//Tercer cuadro CUADRADO
   rect(25, 435, 462, 160, 10);
   fill(100);
-  triangle(103, 475, 63, 555, 143, 555);
+//  triangle(103, 475, 63, 555, 143, 555);
+  rect(63, 475, 80, 80);
   fill(254,53,82);
   calcularRango(2);
   text((board.getResultados()[2]+"").substring(rangoMostrar,rangoDer),300 ,545);
   //text(board.getResultados()[2],300 ,545);
   
-  fill(254,53,82);//Cuarto cuadro HEXAGONO
+  fill(148,73,179);//Cuarto cuadro CIRCULO
   rect(515, 435, 462, 160, 10);
   fill(100);
-  noStroke();
-  ellipse(591, 516, 91, 91);
-  stroke(3);
-  line(564, 473, 620, 473); // PRIMERA LINEA SUPERIOR
-  line(564, 556, 620, 556); // SEGUNDA LINEA INFERIOR
-  line(564, 473, 540, 514); // PRIMERA LINEA IZQUIERDO SUPERIOR
-  line(540, 514, 564, 556); // SEGUNDA LINEA IZQUIERDO INFERIOR
-  line(620, 473, 644, 514); // PRIMERA LINEA DERECHO SUPERIOR
-  line(644, 514, 620, 556); // SEGUNDA LINEA DERECHO INFERIOR
+  ellipse(591, 516, 80, 80);
+  
   fill(101,191,61);
   calcularRango(3);
   text((board.getResultados()[3]+"").substring(rangoMostrar,rangoDer),790 ,545);
