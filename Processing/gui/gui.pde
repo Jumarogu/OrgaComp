@@ -78,6 +78,8 @@ void setup(){
   //Seting boolean variables to false
   gameOver = false;
   opOver = false;
+  println("<Setup>");
+  println("\tJugar: " + jugar + "\n\tCalibrar: " + calibrar + "\n\tMostrar Decenas: " + mDecenas + "\n\tBotones Presionados: " + pressBot);
   
   /*Creación objeto Arduino
    *Set the Arduino digital pins as OUTPUTS.
@@ -87,10 +89,10 @@ void setup(){
   String platformName = System.getProperty("os.name");
   platformName = platformName.toLowerCase();
   if (platformName.indexOf("mac") != -1) {
-    println("Detectado: Mac");
+    println("\tDetectado: Mac OS.");
     arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
   }else if(platformName.indexOf("windows") != -1) {
-    println("Detectado: Windows.");
+    println("\tDetectado: Windows OS.");
     arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
   }
   //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
@@ -101,7 +103,6 @@ void setup(){
     arduino.digitalWrite(i, Arduino.HIGH);
   }
   
-  
   lightS1 = 1;
   lightS2 = 2;
   lightS3 = 3;
@@ -109,6 +110,7 @@ void setup(){
   
   /*Generación de número aleatorios 
    *creación de objeto Operación  */
+  println("\tGenerando Operaciones...");
   generarNumeros();
   opOver = false;
   numero1 = num1 + "" +num2;
@@ -118,11 +120,12 @@ void setup(){
   op = new Operacion(val1, val2);
   println(val1 + " + " + val2 + " = " + (val1+val2));
   board = new Board(op);
-  
+  println("<Setup>\n\n");
   ///Runnable
   Runnable runnable = new BasicThread2();
   Thread thread = new Thread(runnable);
   thread.start();
+  
 }
 
 void draw(){
@@ -421,15 +424,19 @@ void draw(){
     fill(0,0,255);
     if(calibrado1){
       text("OK!", 180, 485);
+      println("\tSensor 1 Calibrado.");
     }
     if(calibrado2){
       text("OK!", 396, 485);
+      println("\tSensor 2 Calibrado.");
     }
     if(calibrado3){
       text("OK!", 611, 485);
+      println("\tSensor 3 Calibrado.");
     }
     if(calibrado4){
       text("OK!", 828, 485);
+      println("\tSensor 4 Calibrado.");
     }
     if(calibrado1 && calibrado2 && calibrado3 && calibrado4){
       calibrar = false;
@@ -440,7 +447,7 @@ void draw(){
 void checar(){
    while(!opOver){
      delay(200);
-     println(pressBot + " - " + ultimoBot + " - " + arduino.analogRead(lightS1) + " - " + arduino.analogRead(lightS2) + " - " + arduino.analogRead(lightS3) + " - " + arduino.analogRead(lightS4));
+     println("\tBoton Presionado: " + pressBot + "\n\tUltimo Boton: " + ultimoBot + "\n\tSen1:" + arduino.analogRead(lightS1) + "\n\tSen2:" + arduino.analogRead(lightS2) + "\n\tSen3:" + arduino.analogRead(lightS3) + "\n\tSen4:" + arduino.analogRead(lightS4));
      if(ultimoBot == 1){
        if(arduino.analogRead(lightS1) > intensidadLuz1){
          pressBot = false;
@@ -642,27 +649,36 @@ class Board{
 class BasicThread2 implements Runnable {
     // This method is called when the thread runs
     public void run() {
+      println("<Proceso para Calibrar>");
+      println("\tDetectando luz actual para calibrar...");
       delay(1000);
-      
       luzOrg1 = arduino.analogRead(lightS1);
       luzOrg2 = arduino.analogRead(lightS2);
       luzOrg3 = arduino.analogRead(lightS3);
       luzOrg4 = arduino.analogRead(lightS4);
+      println("\t\tSensor 1:" + luzOrg1);
+      println("\t\tSensor 2:" + luzOrg2);
+      println("\t\tSensor 3:" + luzOrg3);
+      println("\t\tSensor 4:" + luzOrg4);
       /*
       luzOrg1 = 30;
       luzOrg2 = 30;
       luzOrg3 = 30;
       luzOrg4 = 30;
       */
+      println("");
       while(calibrar){
         calibrarBotones();
       }
+      println("<Termina Calibracion>\n\n");
+      println("<Comienza Juego>");
       while(jugar){
         checar();
-        println("Nueva Operacion!");
+        println("\tNueva Operacion...");
         delay(1000);
         crearOperacion();
       }
+      println("<Fin del Juego>");
     }
 }
 void calibrarBotones(){
@@ -703,15 +719,12 @@ void crearOperacion(){
 void calcularRango(int rang){
   if(board.getResultados()[rang] < 10 ){
     rangoMostrar = 0;
-    //println("RangoMostrar = 0  ->" + board.getResultados()[rang]);
   }else{
-    //println("Rango Mostrar = TMP (" + tmpRango + ")");
     rangoMostrar = tmpRango;
   }
   println(rangoMostrar);
 }
 void cambiarRango(boolean rang){
-  //println("CambiarRango(" + rang + ")");
   if(rang){
     rangoMostrar = tmpRango = 0;
     mDecenas = true;
@@ -719,6 +732,7 @@ void cambiarRango(boolean rang){
     rangoMostrar = tmpRango = 1;
     mDecenas = false;
   }
+  println("\tMostrar Decenas: " + mDecenas);
   respErr1 = false;
   respErr2 = false;
   respErr3 = false;
@@ -765,13 +779,13 @@ void cambiarRango(boolean rang){
   }
   //println("");
   if((dig1+"").substring(rIzq1,rDer1).equals((dig2+"").substring(rIzq2,rDer2))){
-    println((dig1+"").substring(rIzq1,rDer1)  + " = " + (dig2+"").substring(rIzq2,rDer2) + " => True");
+    println("\t" + (dig1+"").substring(rIzq1,rDer1)  + " = " + (dig2+"").substring(rIzq2,rDer2) + " => True");
     if(!mDecenas){
       board.cambiaResultados();
     }
     return true;
   }else{
-    println((dig1+"").substring(rIzq1,rDer1)  + " = " + (dig2+"").substring(rIzq2,rDer2) + " => False");
+    println("\t" + (dig1+"").substring(rIzq1,rDer1)  + " = " + (dig2+"").substring(rIzq2,rDer2) + " => False");
     return false;
   }
 }
