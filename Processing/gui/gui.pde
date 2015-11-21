@@ -14,7 +14,7 @@ boolean calibrado1 = false;
 boolean calibrado2 = false;
 boolean calibrado3 = false;
 boolean calibrado4 = false;
-boolean calibrar = true;///////////////////////////////Cambiar a True
+boolean calibrar = true;//////////////////////////////////////////////Cambiar a True
 
 int luzOrg1;
 int luzOrg2;
@@ -45,8 +45,8 @@ int val1;
 int val2;
 int random;
 
-boolean jugar = true; //////////////////////////////Cambiar a True
-boolean mDecenas = false;//sive para el if de digito() Cambiar a True
+boolean jugar = true; /////////////////////////////////////////////////Cambiar a True
+boolean mDecenas = false;//////////////////////////////////////////////sive para el if de digito() Cambiar a False
 int rangoMostrar = 1;// es para el Substring
 int tmpRango = 1;// Tiene que ser Copia de rangoMostrar
 
@@ -75,9 +75,16 @@ void setup(){
    *Set HIGH digital pins LIFE
    *Set the value for every light sensor
   */
-  arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
-  //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
-  
+  String platformName = System.getProperty("os.name");
+  platformName = platformName.toLowerCase();
+  if (platformName.indexOf("mac") != -1) {
+    println("Detectado: Mac");
+    arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
+  }else if(platformName.indexOf("windows") != -1) {
+    println("Detectado: Windows.");
+    arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
+  }
+
   for (int i = 1; i < 6; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
@@ -564,7 +571,6 @@ class BasicThread2 implements Runnable {
     // This method is called when the thread runs
     public void run() {
       delay(1000);
-      
       
       luzOrg1 = arduino.analogRead(lightS1);
       luzOrg2 = arduino.analogRead(lightS2);
