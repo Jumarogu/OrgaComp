@@ -1,5 +1,6 @@
 import processing.serial.*; //Libreria para utilizar el puerto serial
 import cc.arduino.*;
+import javax.swing.JOptionPane;
 
 //Sensores
 int lightS1;
@@ -63,7 +64,9 @@ int ultimoBot = 5;
 
 
 void setup(){
+
   cambiarRango(true);
+  JOptionPane.showMessageDialog(null, "Primer paso, Cual es la suma de las centenas?\n" + "Segundo paso, Cual es la respuesta de la operación?\n" + "                              SUERTE!!");
   size(1000, 620);
   background(201,89,13);
   //Seting boolean variables to false
@@ -84,7 +87,9 @@ void setup(){
     println("Detectado: Windows.");
     arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
   }
-
+  //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
+  arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
+  
   for (int i = 1; i < 6; i++){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
@@ -475,6 +480,7 @@ void checar(){
         ultimoBot = lightS4;
         if(digito(board.getResultados()[3],op.getResultado())){
           print("Correcto!!");
+          
           if(mDecenas){
              cInterrogacion(op.getResultado());
              delay(1000);
@@ -562,6 +568,19 @@ class Board{
       this.resultados[i] = int(random(1,100)); 
     }
     this.resultados[int(random(4))] = resultado;
+    return this.resultados;
+  }
+  int[] cambiaResultados(){
+    int temp = 0;
+    int posA = int(random(4));
+    int posB = int(random(4));
+    for(int i = 0; i < 10; i++){
+      temp = this.resultados[posA];
+      this.resultados[posA] = this.resultados[posB];
+      this.resultados[posB] = temp;
+      posA = int(random(4));
+      posB = int(random(4));
+    }
     return this.resultados;
   }
 }
@@ -686,6 +705,9 @@ void cambiarRango(boolean rang){
   //println("");
   if((dig1+"").substring(rIzq1,rDer1).equals((dig2+"").substring(rIzq2,rDer2))){
     println((dig1+"").substring(rIzq1,rDer1)  + " = " + (dig2+"").substring(rIzq2,rDer2) + " => True");
+    if(!mDecenas){
+      board.cambiaResultados();
+    }
     return true;
   }else{
     println((dig1+"").substring(rIzq1,rDer1)  + " = " + (dig2+"").substring(rIzq2,rDer2) + " => False");
