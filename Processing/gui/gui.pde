@@ -14,6 +14,7 @@ boolean calibrado1 = false;
 boolean calibrado2 = false;
 boolean calibrado3 = false;
 boolean calibrado4 = false;
+boolean calibrar = true;///////////////////////////////Cambiar a True
 
 int luzOrg1;
 int luzOrg2;
@@ -45,10 +46,9 @@ int val2;
 int random;
 
 boolean jugar = true; //////////////////////////////Cambiar a True
-boolean mDecenas = false;//sive para el if de digito()
+boolean mDecenas = false;//sive para el if de digito() Cambiar a True
 int rangoMostrar = 1;// es para el Substring
 int tmpRango = 1;// Tiene que ser Copia de rangoMostrar
-int rangoDer = 2;
 
 //Objeto Operación y Board
 Operacion op;
@@ -60,10 +60,10 @@ boolean gameOver;
 boolean opOver;
 boolean pressBot = false;
 int ultimoBot = 5;
-boolean calibrar = true;
 
 
 void setup(){
+  cambiarRango(true);
   size(1000, 620);
   background(201,89,13);
   //Seting boolean variables to false
@@ -82,6 +82,7 @@ void setup(){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
   }
+  
   
   lightS1 = 1;
   lightS2 = 2;
@@ -143,7 +144,7 @@ void draw(){
   textSize(100);
   fill(52,203,205);
   calcularRango(0);
-  text((board.getResultados()[0]+"").substring(rangoMostrar,rangoDer),300 ,360);
+  text((board.getResultados()[0]+"").substring(rangoMostrar,rangoMostrar+1),300 ,360);
   //text(board.getResultados()[0],300 ,360);
 
   fill(101,191,61);//Segundo cuadro TRIANGULO
@@ -152,7 +153,7 @@ void draw(){
   triangle(553, 370, 593, 290, 633, 370);
   fill(148,73,179);
   calcularRango(1);
-  text((board.getResultados()[1]+"").substring(rangoMostrar,rangoDer),790 ,360);
+  text((board.getResultados()[1]+"").substring(rangoMostrar,rangoMostrar+1),790 ,360);
   //text(board.getResultados()[1],790 ,360);
   
   fill(52,203,205);//Tercer cuadro CUADRADO
@@ -162,7 +163,7 @@ void draw(){
   rect(63, 475, 80, 80);
   fill(254,53,82);
   calcularRango(2);
-  text((board.getResultados()[2]+"").substring(rangoMostrar,rangoDer),300 ,545);
+  text((board.getResultados()[2]+"").substring(rangoMostrar,rangoMostrar+1),300 ,545);
   //text(board.getResultados()[2],300 ,545);
   
   fill(148,73,179);//Cuarto cuadro CIRCULO
@@ -172,7 +173,7 @@ void draw(){
   
   fill(101,191,61);
   calcularRango(3);
-  text((board.getResultados()[3]+"").substring(rangoMostrar,rangoDer),790 ,545);
+  text((board.getResultados()[3]+"").substring(rangoMostrar,rangoMostrar+1),790 ,545);
   //text(board.getResultados()[3],790 ,545);
   /*text(board.getResultados()[3],790 ,545);
   println((test+"").substring(0,1) + " - ");
@@ -564,11 +565,17 @@ class BasicThread2 implements Runnable {
     public void run() {
       delay(1000);
       
+      
       luzOrg1 = arduino.analogRead(lightS1);
       luzOrg2 = arduino.analogRead(lightS2);
       luzOrg3 = arduino.analogRead(lightS3);
       luzOrg4 = arduino.analogRead(lightS4);
-      
+      /*
+      luzOrg1 = 30;
+      luzOrg2 = 30;
+      luzOrg3 = 30;
+      luzOrg4 = 30;
+      */
       while(calibrar){
         calibrarBotones();
       }
@@ -618,23 +625,18 @@ void crearOperacion(){
 void calcularRango(int rang){
   if(board.getResultados()[rang] < 10 ){
     rangoMostrar = 0;
-    rangoDer = 1;
   }else{
-    rangoDer = 2;
     rangoMostrar = tmpRango;
   }  
 }
 void cambiarRango(boolean rang){
   if(rang){
     rangoMostrar = tmpRango = 0;
-    rangoDer = 1;
     mDecenas = true;
   }else{
     rangoMostrar = tmpRango = 1;
-    rangoDer = 2;
     mDecenas = false;
   }
-  println("mDecenas: " + mDecenas);
 }
   boolean digito(int dig1, int dig2){//True para Decenas
   int rIzq1;
