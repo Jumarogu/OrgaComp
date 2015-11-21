@@ -655,7 +655,6 @@ class BasicThread2 implements Runnable {
       luzOrg4 = 30;
       */
       while(calibrar){
-        delay(1000);
         calibrarBotones();
       }
       while(jugar){
@@ -667,7 +666,7 @@ class BasicThread2 implements Runnable {
     }
 }
 void calibrarBotones(){
-  
+  delay(1000);
   if(luzOrg1 > arduino.analogRead(lightS1)/2){
     intensidadLuz1 = arduino.analogRead(lightS1) + 5;
     calibrado1 = true;
