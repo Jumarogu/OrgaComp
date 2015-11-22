@@ -30,11 +30,11 @@ int luzOrg4;
 
 //Arduino variables
 Arduino arduino;
-int life1 = 1;
-int life2 = 2;
-int life3 = 3;
-int life4 = 4;
-int life5 = 5;
+int life1 = 13;
+int life2 = 12;
+int life3 = 11;
+int life4 = 10;
+int life5 = 9;
 
 //Variables para generar numeros para sumar
 int num1 = 0;
@@ -106,7 +106,7 @@ void setup(){
   //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
   //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
   
-  for (int i = 1; i < 6; i++){
+  for (int i = 13; i > 8; i--){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
   }
@@ -831,11 +831,14 @@ void agregarCorazon(boolean agr){
       mBolitas = true;
     }
   }
-  for(int i = 1; i < 6; i++){
-    if(i <= corazones){
+  println("\t\t"corazones + " Corazones");
+  int j = 1;
+  for (int i = 13; i > 8; i--){
+    if(j <= corazones){
       arduino.digitalWrite(i ,Arduino.HIGH);
     }else{
       arduino.digitalWrite(i ,Arduino.LOW);
     }
+    j++;
   }
 }
