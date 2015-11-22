@@ -20,6 +20,7 @@ boolean respErr1 = false;
 boolean respErr2 = false;
 boolean respErr3 = false;
 boolean respErr4 = false;
+boolean mBolitas = true;
 
 int luzOrg1;
 int luzOrg2;
@@ -254,7 +255,7 @@ void draw(){
 
 ////////
   ///Bolitas para contar************************
-  if(respErr1 || respErr2 || respErr3 || respErr4){
+  if(mBolitas){
     fill(255,0,0);//Decenas
     rect(275, 50, 180, 150, 10);
     fill(252,166,3);
@@ -416,19 +417,15 @@ void draw(){
     fill(0,0,255);
     if(calibrado1){
       text("OK!", 180, 485);
-      println("\tSensor 1 Calibrado.");
     }
     if(calibrado2){
       text("OK!", 396, 485);
-      println("\tSensor 2 Calibrado.");
     }
     if(calibrado3){
       text("OK!", 611, 485);
-      println("\tSensor 3 Calibrado.");
     }
     if(calibrado4){
       text("OK!", 828, 485);
-      println("\tSensor 4 Calibrado.");
     }
     if(calibrado1 && calibrado2 && calibrado3 && calibrado4){
       calibrar = false;
@@ -439,7 +436,7 @@ void draw(){
 void checar(){
    while(!opOver){
      delay(200);
-     println("\tBoton Presionado: " + pressBot + "\n\tUltimo Boton: " + ultimoBot + "\n\tSen1:" + arduino.analogRead(lightS1) + "\n\tSen2:" + arduino.analogRead(lightS2) + "\n\tSen3:" + arduino.analogRead(lightS3) + "\n\tSen4:" + arduino.analogRead(lightS4));
+     //println("\n\n\tBoton Presionado: " + pressBot + "\n\tUltimo Boton: " + ultimoBot + "\n\tSen1:" + arduino.analogRead(lightS1) + "\n\tSen2:" + arduino.analogRead(lightS2) + "\n\tSen3:" + arduino.analogRead(lightS3) + "\n\tSen4:" + arduino.analogRead(lightS4));
      if(ultimoBot == 1){
        if(arduino.analogRead(lightS1) > intensidadLuz1){
          pressBot = false;
@@ -671,26 +668,39 @@ class BasicThread2 implements Runnable {
     }
 }
 void calibrarBotones(){
-  delay(1000);
-  
-  if(luzOrg1 > arduino.analogRead(lightS1)/2){
-    intensidadLuz1 = arduino.analogRead(lightS1) + 5;
+  println(arduino.analogRead(lightS1) + " - "  + arduino.analogRead(lightS2) + " - "  + arduino.analogRead(lightS3) + " - "  + arduino.analogRead(lightS4));
+  delay(500);
+  //println("Calibrador:\n " + luzOrg1 + " - " + arduino.analogRead(lightS1)  + " -> " + ((arduino.analogRead(lightS1)/2)+2));
+  if(luzOrg1/2 >= arduino.analogRead(lightS1)/2+2){
+    intensidadLuz1 = arduino.analogRead(lightS1);
     calibrado1 = true;
+    pressBot = true;
+    ultimoBot = lightS1;
     println("\tBoton 1 Calibrado a: " + intensidadLuz1);
   }
-  if(luzOrg2 > arduino.analogRead(lightS2)/2){
-    intensidadLuz2 = arduino.analogRead(lightS2) + 5;
+  if(luzOrg2/2 >= arduino.analogRead(lightS2)/2+2){
+    intensidadLuz2 = arduino.analogRead(lightS2);
     calibrado2 = true;
+    pressBot = true;
+    ultimoBot = lightS2;
     println("\tBoton 2 Calibrado a: " + intensidadLuz2);
-  }if(luzOrg3 > arduino.analogRead(lightS3)/2){
-    intensidadLuz3 = arduino.analogRead(lightS3) + 5;
+  }
+  if(luzOrg3/2 >= arduino.analogRead(lightS3)/2+2){
+    intensidadLuz3 = arduino.analogRead(lightS3);
     calibrado3 = true;
+    pressBot = true;
+    ultimoBot = lightS3;
     println("\tBoton 3 Calibrado a: " + intensidadLuz3);
   }
-  if(luzOrg4 > arduino.analogRead(lightS4)/2){
-    intensidadLuz4 = arduino.analogRead(lightS4) + 5;
+  if(luzOrg4/2 >= arduino.analogRead(lightS4)/2+2){
+    intensidadLuz4 = arduino.analogRead(lightS4);
     calibrado4 = true;
+    pressBot = true;
+    ultimoBot = lightS4;
     println("\tBoton 4 Calibrado a: " + intensidadLuz4);
+  }
+  if(calibrado1 && calibrado2 && calibrado3 && calibrado4){
+    calibrar = false;
   }
 }
 
@@ -759,10 +769,27 @@ void cambiarRango(boolean rang){
       rDer2 = 1;
     }
   }else{
-    rIzq1 = 1;
-    rDer1 = 2;
-    rIzq2 = 1;
-    rDer2 = 2;
+    if(dig1 > 9 && dig2 > 9){
+      rIzq1 = 1;
+      rDer1 = 2;
+      rIzq2 = 1;
+      rDer2 = 2;
+    }else if(dig1 < 9 && dig2 > 9){
+      rIzq1 = 0;
+      rDer1 = 1;
+      rIzq2 = 1;
+      rDer2 = 2;
+    }else if(dig1 > 9 && dig2 < 9){
+      rIzq1 = 1;
+      rDer1 = 2;
+      rIzq2 = 0;
+      rDer2 = 1;
+    }else{
+      rIzq1 = 0;
+      rDer1 = 1;
+      rIzq2 = 0;
+      rDer2 = 1;
+    }
   }
   if((dig1+"").substring(rIzq1,rDer1).equals((dig2+"").substring(rIzq2,rDer2))){
     println("\t" + (dig1+"").substring(rIzq1,rDer1)  + " = " + (dig2+"").substring(rIzq2,rDer2) + " => True");
@@ -792,23 +819,23 @@ void agregarCorazon(boolean agr){
       println("\t\tAgregar Corazon!");
       corazones++;
     }
+    mBolitas = true;
   }else{
     respuestasConsecutivas = 0;
     println("\t\tRespuestas Correctas Consecutivas: " + respuestasConsecutivas);
     corazones--;
     println("\t\tQuitar Corazon");
+    if(mBolitas){
+      mBolitas = false;
+    }else{
+      mBolitas = true;
+    }
   }
-  if(corazones == 0){
-    println("\t\t0 LED's prendidos");
-  }else if(corazones == 1){
-    println("\t\t1 LED's prendidos");
-  }else if(corazones == 2){
-    println("\t\t2 LED's prendidos");
-  }else if(corazones == 3){
-    println("\t\t3 LED's prendidos");
-  }else if(corazones == 4){
-    println("\t\t4 LED's prendidos");
-  }else if(corazones == 5){
-    println("\t\t5 LED's prendidos");
+  for(int i = 1; i < 6; i++){
+    if(i <= corazones){
+      arduino.digitalWrite(i ,Arduino.HIGH);
+    }else{
+      arduino.digitalWrite(i ,Arduino.LOW);
+    }
   }
 }
