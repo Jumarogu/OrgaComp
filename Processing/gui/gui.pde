@@ -105,7 +105,6 @@ void setup(){
   }
   //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
   //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
-
   
   for (int i = 13; i > 8; i--){
     arduino.pinMode(i, Arduino.OUTPUT);
@@ -831,7 +830,7 @@ void agregarCorazon(boolean agr){
       mBolitas = true;
     }
   }
-  println("\t\t"corazones + " Corazones");
+  println("\t\t"+ corazones + " Corazones");
   int j = 1;
   for (int i = 13; i > 8; i--){
     if(j <= corazones){
