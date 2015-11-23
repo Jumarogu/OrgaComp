@@ -23,6 +23,7 @@ boolean respErr4 = false;
 boolean mBolitas = true;
 boolean correcta = false;
 boolean ayuda = false;
+boolean instrucciones = true;
 
 int luzOrg1;
 int luzOrg2;
@@ -390,14 +391,7 @@ void draw(){
     mBolitas = false;
     ayuda = false;
   }
- /* if(correcta){
-    println("SISISISISIS");
-    textSize(40);
-    text("Correcto!", 600, 120);
-    delay(4000);
-    mBolitas = true;
-  }
-  */
+  
   if(calibrar){
     textSize(50);
     fill(100);
@@ -448,6 +442,22 @@ void draw(){
       calibrar = false;
     }
   }
+  /*
+  if(instrucciones){
+     textSize(50);
+    fill(100);
+    rect(0,0, 1000, 620);
+    fill(0,0,255);
+    rect(400,270, 200, 80,20);
+    fill(0);
+    text("Instrucciones: ", 500, 325);
+    textSize(28);
+    text("Cuando comience la operación, recuerda sumar primero las UNIDADES y después las DECENAS", 500, 380);
+    if(instrucciones){
+      //delay(10000);
+      instrucciones = false;
+    }
+  }*/
 }
 
 void checar(){
