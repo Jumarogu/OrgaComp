@@ -21,6 +21,8 @@ boolean respErr2 = false;
 boolean respErr3 = false;
 boolean respErr4 = false;
 boolean mBolitas = true;
+boolean correcta = false;
+boolean ayuda = false;
 
 int luzOrg1;
 int luzOrg2;
@@ -98,10 +100,10 @@ void setup(){
   platformName = platformName.toLowerCase();
   if (platformName.indexOf("mac") != -1) {
     println("\tDetectado: Mac OS.");
-    //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
+    arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
   }else if(platformName.indexOf("windows") != -1) {
     println("\tDetectado: Windows OS.");
-    //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
+    arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
   }
   //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
   //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
@@ -255,6 +257,7 @@ void draw(){
 ////////
   ///Bolitas para contar************************
   if(mBolitas){
+    correcta = false;
     fill(255,0,0);//Decenas
     rect(275, 50, 180, 150, 10);
     fill(252,166,3);
@@ -368,9 +371,11 @@ void draw(){
         posY += 25;
       }
     }
-  }else{
+  }
+  else if(ayuda){
+    correcta = false;
     textSize(40);
-    text("Tu puedes! cual es \n la suma de " + ((mDecenas)?num1:num2) + "+" + ((mDecenas)?num3:num4) + "?", 600, 120);
+    text("Tú puedes! cual es \n la suma de " + ((mDecenas)?num1:num2) + "+" + ((mDecenas)?num3:num4) + "?", 600, 120);
     if(mDecenas){
       fill(255,0,0);
     }else{
@@ -379,7 +384,20 @@ void draw(){
     text(((mDecenas)?num1:num2), 680, 180);
     text(((mDecenas)?num3:num4), 737, 180); 
   }
-  
+  if(correcta){
+    textSize(40);
+    text("Correcto!", 600, 120);
+    mBolitas = false;
+    ayuda = false;
+  }
+ /* if(correcta){
+    println("SISISISISIS");
+    textSize(40);
+    text("Correcto!", 600, 120);
+    delay(4000);
+    mBolitas = true;
+  }
+  */
   if(calibrar){
     textSize(50);
     fill(100);
@@ -389,7 +407,7 @@ void draw(){
     fill(0);
     text("Jugar!", 500, 325);
     
-    textSize(13);
+    textSize(18);
     text("Para empezar a jugar pasa tu mano por las cuatro figuras \t hasta que veas cuatro 'OK'", 500, 380);
     
     noStroke();
@@ -463,6 +481,9 @@ void checar(){
         ultimoBot = lightS1;
         if(digito(board.getResultados()[0],op.getResultado())){
            print("Correcto!!");
+           correcta = true;
+           mBolitas = false;
+           ayuda = false;
            if(mDecenas){
              cInterrogacion(op.getResultado());
              delay(1000);
@@ -476,6 +497,8 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          ayuda = true;
+          correcta = false;
           agregarCorazon(false);
           respErr1 = true;
         }
@@ -484,7 +507,10 @@ void checar(){
         pressBot = true;
         ultimoBot = lightS2;
         if(digito(board.getResultados()[1],op.getResultado())){
-           print("Correcto!!"); 
+           print("Correcto!!");
+           correcta = true;
+           mBolitas = false;
+           ayuda = false;
            if(mDecenas){
              cInterrogacion(op.getResultado());
              delay(1000);
@@ -498,6 +524,8 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          ayuda = true;
+          correcta = false;
           agregarCorazon(false);
           respErr2 = true;
         }
@@ -506,7 +534,10 @@ void checar(){
         pressBot = true;
         ultimoBot = lightS3;
         if(digito(board.getResultados()[2],op.getResultado())){
-          print("Correcto!!"); 
+          print("Correcto!!");
+          correcta = true;
+          mBolitas = false;
+          ayuda = false;
           if(mDecenas){
              cInterrogacion(op.getResultado());
              delay(1000);
@@ -520,6 +551,8 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          ayuda = true;
+          correcta = false;
           agregarCorazon(false);
           respErr3 = true;
         }
@@ -529,7 +562,9 @@ void checar(){
         ultimoBot = lightS4;
         if(digito(board.getResultados()[3],op.getResultado())){
           print("Correcto!!");
-          
+          correcta = true;
+          mBolitas = false;
+          ayuda = false;
           if(mDecenas){
              cInterrogacion(op.getResultado());
              delay(1000);
@@ -543,6 +578,8 @@ void checar(){
         else{
           print("Respuesta incorrecta!!");
           print("Intenta de nuevo!");
+          ayuda = true;
+          correcta = false;
           agregarCorazon(false);
           respErr4 = true;
         }
@@ -662,6 +699,7 @@ class BasicThread2 implements Runnable {
         agregarCorazon(true);
         delay(1000);
         crearOperacion();
+        mBolitas = true;
       }
       println("<Fin del Juego>");
     }
