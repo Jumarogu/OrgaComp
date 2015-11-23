@@ -98,19 +98,19 @@ void setup(){
   platformName = platformName.toLowerCase();
   if (platformName.indexOf("mac") != -1) {
     println("\tDetectado: Mac OS.");
-    arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
+    //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
   }else if(platformName.indexOf("windows") != -1) {
     println("\tDetectado: Windows OS.");
-    arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
+    //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
   }
   //arduino = new Arduino(this, "COM3", 57600); //Windows Depende el COM
   //arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);//Mac
+
   
   for (int i = 13; i > 8; i--){
     arduino.pinMode(i, Arduino.OUTPUT);
     arduino.digitalWrite(i, Arduino.HIGH);
   }
-  
   lightS1 = 1;
   lightS2 = 2;
   lightS3 = 3;
