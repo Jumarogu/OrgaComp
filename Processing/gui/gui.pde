@@ -502,6 +502,8 @@ void checar(){
              cInterrogacion(op.getResultado());
              delay(1000);
              cambiarRango(true);
+             correcta = false;
+             mBolitas = true;
            }
         }
         else{
@@ -529,6 +531,8 @@ void checar(){
              cInterrogacion(op.getResultado());
              delay(1000);
              cambiarRango(true);
+             correcta = false;
+             mBolitas = true;
            }
         }
         else{
@@ -556,6 +560,8 @@ void checar(){
              cInterrogacion(op.getResultado());
              delay(1000);
              cambiarRango(true);
+             correcta = false;
+             mBolitas = true;
            }
         }
         else{
@@ -583,6 +589,8 @@ void checar(){
              cInterrogacion(op.getResultado());
              delay(1000);
              cambiarRango(true);
+             correcta = false;
+             mBolitas = true;
            }
         }
         else{
